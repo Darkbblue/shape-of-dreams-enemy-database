@@ -1,0 +1,671 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_Special_BossErebos",
+  "monster_type": "Boss",
+  "difficulty": "diffEasy",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 11220,
+    "attack_damage": 41.6,
+    "ability_power": 41.6,
+    "armor": 0,
+    "ability_haste": -10,
+    "attack_speed_multiplier": 0.85,
+    "movement_speed": 4.05,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 100,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "ai_logic_note": "all moves are driven by Mon_Special_BossErebos AI code (no ability pool)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_Special_BossErebos_Gaze",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    if (Random.value < 0.25 * dt && hp_ratio < 0.75f && ready<At_Mon_Special_BossErebos_Gaze>())",
+        "        CAST(At_Mon_Special_BossErebos_Gaze);"
+      ],
+      "cooldown": 38.8889,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_Gaze_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 1,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 1
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": true,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 1
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_SpawnBlackhole",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    if (Random.value < 0.25 * dt && hp_ratio < 0.75f && ready<At_Mon_Special_BossErebos_Gaze>())",
+        "    if (_isPhaseChanged && Random.value < 0.15 * dt && ready<At_Mon_Special_BossErebos_SpawnBlackhole>())",
+        "            CAST(At_Mon_Special_BossErebos_SpawnBlackhole);"
+      ],
+      "cooldown": 50,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.01,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_SpawnBlackhole",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 1
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_Teleport",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    else if (Random.value < 0.25 * dt && ready<At_Mon_Special_BossErebos_Teleport>())",
+        "        CAST(At_Mon_Special_BossErebos_Teleport);"
+      ],
+      "cooldown": 16.6667,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": 0,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.15,
+      "channel_duration": 0.65,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 1,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_Teleport",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 1,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 1
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_StarRain",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    else if (Random.value < 0.65 * dt && ready<At_Mon_Special_BossErebos_StarRain>() && in_range<At_Mon_Special_BossErebos_StarRain>())",
+        "        CAST(At_Mon_Special_BossErebos_StarRain);"
+      ],
+      "cooldown": 8.8889,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.5,
+      "channel_duration": 0.6,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 13,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_StarRain_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 1.5,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_Ripple",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    else if (Random.value < 0.35 * dt && ready<At_Mon_Special_BossErebos_Ripple>() && in_range<At_Mon_Special_BossErebos_Ripple>())",
+        "        CAST(At_Mon_Special_BossErebos_Ripple);"
+      ],
+      "cooldown": 11.1111,
+      "minimum_delay": 1,
+      "max_charges": 1,
+      "start_charges": 0,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.01,
+      "channel_duration": 0.5,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 13,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_Ripple",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 2,
+          "useCustomParameters": 1,
+          "delay": 1.25,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_SpawnTormentor",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    else if (Random.value < 0.35 * dt && hp_ratio < 0.9f && ready<At_Mon_Special_BossErebos_SpawnTormentor>())",
+        "        CAST(At_Mon_Special_BossErebos_SpawnTormentor);"
+      ],
+      "cooldown": 38.8889,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 1.5,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_SpawnTormentor_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 1
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_Meteor",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    else if (Random.value < 0.15 * dt && ready<At_Mon_Special_BossErebos_Meteor>())",
+        "        CAST(At_Mon_Special_BossErebos_Meteor);"
+      ],
+      "cooldown": 38.8889,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": 0,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1.35,
+      "channel_duration": 1,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 20,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_Meteor",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 1,
+          "delay": 8.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_AntiGravity",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossErebos AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (!((Object)(object)context.targetEnemy == (Object)null))",
+        "    else if (_isPhaseChanged && Random.value < 0.15 * dt && hp_ratio < 0.4f && ready<At_Mon_Special_BossErebos_AntiGravity>())",
+        "        CAST(At_Mon_Special_BossErebos_AntiGravity);"
+      ],
+      "cooldown": 50,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.01,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_AntiGravity_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 1
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossErebos_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 4.7059,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.5882,
+      "channel_duration": 0.5882,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 9,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 4,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossErebos_AtkSpawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}

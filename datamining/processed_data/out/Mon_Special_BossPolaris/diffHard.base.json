@@ -1,0 +1,1363 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_Special_BossPolaris",
+  "monster_type": "Boss",
+  "difficulty": "diffHard",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 19800,
+    "attack_damage": 49.72,
+    "ability_power": 49.72,
+    "armor": 0,
+    "ability_haste": 10,
+    "attack_speed_multiplier": 1.1,
+    "movement_speed": 5.375,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 0,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "ai_logic_note": "all moves are driven by Mon_Special_BossPolaris AI code (no ability pool)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_Dash",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Random.value < 0.75f * dt && ready<At_Mon_Special_BossPolaris_Holy_Dash>())",
+        "    Helper_CastAbility<At_Mon_Special_BossPolaris_Holy_Dash>(new CastInfo(this, Holy_GetGoodDashPosition()));"
+      ],
+      "cooldown": 8.1818,
+      "minimum_delay": 0,
+      "max_charges": 2,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 100,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_Special_BossPolaris_Holy_Dash",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": false,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_RainFire",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Holy_CanCastPhase3Abilities() && ready<At_Mon_Special_BossPolaris_Holy_RainFire>())",
+        "    CAST(At_Mon_Special_BossPolaris_Holy_RainFire);"
+      ],
+      "cooldown": 68.1818,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_RainFire",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_Summon",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Holy_CanCastPhase2Abilities())",
+        "    if (ready<At_Mon_Special_BossPolaris_Holy_Summon>())",
+        "        CAST(At_Mon_Special_BossPolaris_Holy_Summon);"
+      ],
+      "cooldown": 63.6364,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_Summon",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_CounterSpell",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Holy_CanCastPhase2Abilities())",
+        "    if (Random.value < 0.5f * dt && ready<At_Mon_Special_BossPolaris_Holy_CounterSpell>() && in_range<At_Mon_Special_BossPolaris_Holy_CounterSpell>())",
+        "        CAST(At_Mon_Special_BossPolaris_Holy_CounterSpell);"
+      ],
+      "cooldown": 45.4545,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0.35,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 10,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_Special_BossPolaris_Holy_CounterSpell",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 3,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_GoldenSpear",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Holy_CanCastPhase2Abilities())",
+        "    if (Random.value < 0.5f * dt && ready<At_Mon_Special_BossPolaris_Holy_GoldenSpear>() && in_range<At_Mon_Special_BossPolaris_Holy_GoldenSpear>())",
+        "        CAST(At_Mon_Special_BossPolaris_Holy_GoldenSpear);"
+      ],
+      "cooldown": 6.3636,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1.2,
+      "channel_duration": 0.7,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 14,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_GoldenSpear_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 1,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 1.5,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_SelfCleanse",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Holy_CanCastPhase2Abilities())",
+        "    if (ready<At_Mon_Special_BossPolaris_Holy_SelfCleanse>())",
+        "        if (Status.hasCold)",
+        "        if (num > 8)",
+        "                CAST(At_Mon_Special_BossPolaris_Holy_SelfCleanse);"
+      ],
+      "cooldown": 36.3636,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1.5,
+      "channel_duration": 0.75,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_SelfCleanse",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_Purgatory",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "if (Holy_CanCastPhase2Abilities())",
+        "if (Random.value < 0.5f * dt && ready<At_Mon_Special_BossPolaris_Holy_Purgatory>() && in_range<At_Mon_Special_BossPolaris_Holy_Purgatory>())",
+        "        CAST(At_Mon_Special_BossPolaris_Holy_Purgatory);"
+      ],
+      "cooldown": 18.1818,
+      "minimum_delay": 0,
+      "max_charges": 3,
+      "start_charges": -1,
+      "added_charges": 999,
+      "mana_cost": 0,
+      "post_delay": 0.9,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 20,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_Purgatory_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_ScatterFire",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Holy()",
+        "else if (Random.value < 0.5f * dt && ready<At_Mon_Special_BossPolaris_Holy_ScatterFire>() && in_range<At_Mon_Special_BossPolaris_Holy_ScatterFire>())",
+        "    CAST(At_Mon_Special_BossPolaris_Holy_ScatterFire);"
+      ],
+      "cooldown": 5.4545,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.5,
+      "channel_duration": 0.65,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 0,
+        "length": 10,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_ScatterFire",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_Scream",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "if (hp_ratio < 0.6f && ready<At_Mon_Special_BossPolaris_Monster_Scream>())",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_Scream);"
+      ],
+      "cooldown": 72.7273,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1.25,
+      "channel_duration": 2.5,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_Scream",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_PizzaLightning",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "else if (hp_ratio < 0.4f && ready<At_Mon_Special_BossPolaris_Monster_PizzaLightning>())",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_PizzaLightning);"
+      ],
+      "cooldown": 63.6364,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 2,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_PizzaLightning_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_JumpStomp",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "else if (hp_ratio < 0.75f && Random.value < 0.75f * dt && ready<At_Mon_Special_BossPolaris_Monster_JumpStomp>() && in_range<At_Mon_Special_BossPolaris_Monster_JumpStomp>())",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_JumpStomp);"
+      ],
+      "cooldown": 36.3636,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.8,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 16,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_JumpStomp",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_SlashDash",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "else if (hp_ratio < 0.75f && ((Random.value < 0.75f * dt) | flag) && ready<At_Mon_Special_BossPolaris_Monster_SlashDash>() && in_range<At_Mon_Special_BossPolaris_Monster_SlashDash>())",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_SlashDash);"
+      ],
+      "cooldown": 7.2727,
+      "minimum_delay": 2,
+      "max_charges": 2,
+      "start_charges": -1,
+      "added_charges": 2,
+      "mana_cost": 0,
+      "post_delay": 0.35,
+      "channel_duration": 0.9,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 0,
+        "length": 20,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_SlashDash",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_Dash",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "else if (((Random.value < 0.75f * dt) | flag) && ready<At_Mon_Special_BossPolaris_Monster_Dash>() && in_range<At_Mon_Special_BossPolaris_Monster_Dash>() && Vector3.Distance(context.targetEnemy.GetAIAgentPosition(this), agentPosition) > 4f)",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_Dash);"
+      ],
+      "cooldown": 3.6364,
+      "minimum_delay": 1,
+      "max_charges": 2,
+      "start_charges": -1,
+      "added_charges": 2,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 12,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": true
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_Dash",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 2,
+          "useCustomParameters": 1,
+          "delay": 1.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_Smite",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "else if (Random.value < 0.75f * dt && ready<At_Mon_Special_BossPolaris_Monster_Smite>() && in_range<At_Mon_Special_BossPolaris_Monster_Smite>())",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_Smite);"
+      ],
+      "cooldown": 6.3636,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.35,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 0,
+        "length": 20,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_Smite_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 2,
+          "useCustomParameters": 1,
+          "delay": 1.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_CircularSwipe",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Monster()",
+        "else if (ready<At_Mon_Special_BossPolaris_Monster_CircularSwipe>() && in_range<At_Mon_Special_BossPolaris_Monster_CircularSwipe>())",
+        "    CAST(At_Mon_Special_BossPolaris_Monster_CircularSwipe);"
+      ],
+      "cooldown": 7.2727,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.3,
+      "channel_duration": 0.65,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 3.5,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_CircularSwipe",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 2.2727,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.1364,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 18,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Holy_Atk_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 0,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 1.5,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 1.8182,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.3182,
+      "channel_duration": 0.0091,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 1,
+        "range": 0,
+        "width": 0,
+        "length": 6,
+        "angle": 120,
+        "radius": 6,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossPolaris_Monster_Atk_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Holy_ShortInvul",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 27.2727,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_Special_BossPolaris_Holy_ShortInvul",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossPolaris_Monster_CursedDive",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossPolaris AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 3.6364,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": null,
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}

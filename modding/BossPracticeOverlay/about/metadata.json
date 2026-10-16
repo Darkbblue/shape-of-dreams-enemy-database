@@ -1,0 +1,9 @@
+{
+  "id": "tartessossian.bosspracticeoverlay",
+  "name": "Boss Practice Overlay",
+  "author": "Tartessossian",
+  "modVer": "0.1.0",
+  "assemblies": [
+    "BossPracticeOverlay.dll"
+  ]
+}

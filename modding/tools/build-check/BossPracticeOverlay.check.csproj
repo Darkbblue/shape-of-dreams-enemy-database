@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Local sanity check: compiles the exact mod source against UnityStubs.cs plus the real
+    Dew.Core.dll / Dew.Contents.dll from ref/gamefiles/managed. Catches typo'd or renamed
+    game API usage without needing a full Managed folder. The output DLL is a throwaway.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>BossPracticeOverlayCheck</AssemblyName>
+    <OutputPath>bin-check\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+    <DebugType>none</DebugType>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+    <GameManaged Condition="'$(GameManaged)' == ''">$(MSBuildThisFileDirectory)..\..\..\ref\gamefiles\managed</GameManaged>
+    <!-- Explicit sources only: the default glob would also swallow stubs\*.cs and stubs\obj\*.cs. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\BossPracticeOverlay\BossPracticeOverlayMod.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Dew.Core">
+      <HintPath>$(GameManaged)\Dew.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Dew.Contents">
+      <HintPath>$(GameManaged)\Dew.Contents.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <ProjectReference Include="stubs\UnityEngine.CoreModule\UnityEngine.CoreModule.csproj" />
+    <ProjectReference Include="stubs\Mirror\Mirror.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

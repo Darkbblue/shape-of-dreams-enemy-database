@@ -1,0 +1,1288 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_Primus_BossPrimusAeron",
+  "monster_type": "Boss",
+  "difficulty": "diffHard",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 7700,
+    "attack_damage": 56.5,
+    "ability_power": 56.5,
+    "armor": 0,
+    "ability_haste": 10,
+    "attack_speed_multiplier": 1.1,
+    "movement_speed": 3.225,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 0,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "ai_logic_note": "all moves are driven by Mon_Primus_BossPrimusAeron AI code (no ability pool)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Force_GoldRain",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Force()",
+        "if (hp_ratio < 0.35f && ready<At_Mon_Primus_BossPrimusAeron_Force_GoldRain>() && in_range<At_Mon_Primus_BossPrimusAeron_Force_GoldRain>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Force_GoldRain);"
+      ],
+      "cooldown": 45.4545,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0.45,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_Primus_BossPrimusAeron_Force_GoldRain",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Force_DropGiantSword",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Force()",
+        "if (hp_ratio < 0.8f && Random.value < 0.2f && ready<At_Mon_Primus_BossPrimusAeron_Force_DropGiantSword>())",
+        "    else",
+        "        CAST(At_Mon_Primus_BossPrimusAeron_Force_DropGiantSword);"
+      ],
+      "cooldown": 16.3636,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 20,
+        "width": 8,
+        "length": 4,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Force_DropGiantSword",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Force_JumpAttack",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Force()",
+        "if (hp_ratio < 0.8f && Random.value < 0.2f && ready<At_Mon_Primus_BossPrimusAeron_Force_DropGiantSword>())",
+        "if (hp_ratio < 0.65f && Random.value < 0.35f && ready<At_Mon_Primus_BossPrimusAeron_Force_JumpAttack>() && in_range<At_Mon_Primus_BossPrimusAeron_Force_JumpAttack>())",
+        "        CAST(At_Mon_Primus_BossPrimusAeron_Force_JumpAttack);"
+      ],
+      "cooldown": 9.0909,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.5,
+      "channel_duration": 0.35,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 20,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Force_JumpAttack",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Force_Swipe",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Force()",
+        "else if (Random.value < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Force_Swipe>() && in_range<At_Mon_Primus_BossPrimusAeron_Force_Swipe>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Force_Swipe);"
+      ],
+      "cooldown": 4.5455,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1.2273,
+      "channel_duration": 0.9091,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 4,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Force_Swipe",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Dash",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Force()",
+        "else if (ready<At_Mon_Primus_BossPrimusAeron_Dash>() && Vector3.Distance(agentPosition, context.targetEnemy.GetAIAgentPosition(this)) > 4f)",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Dash);"
+      ],
+      "cooldown": 6.8182,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.2,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Dash",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Force_Grab",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Force()",
+        "else if (hp_ratio < 0.8f && Random.value < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Force_Grab>() && in_range<At_Mon_Primus_BossPrimusAeron_Force_Grab>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Force_Grab);"
+      ],
+      "cooldown": 9.0909,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.35,
+      "channel_duration": 0.35,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 1,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 80,
+        "radius": 18,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Force_Grab",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_Doom",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Adapt()",
+        "if (hp_ratio < 0.5f && ready<At_Mon_Primus_BossPrimusAeron_Adapt_Doom>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Adapt_Doom);"
+      ],
+      "cooldown": 100,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_Primus_BossPrimusAeron_Adapt_Doom_Initial",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_SmiteStorm",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Adapt()",
+        "else if (hp_ratio < 0.75f && Random.value < 0.2f && ready<At_Mon_Primus_BossPrimusAeron_Adapt_SmiteStorm>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Adapt_SmiteStorm);"
+      ],
+      "cooldown": 31.8182,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Adapt_SmiteStorm",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_Starfall",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Adapt()",
+        "else if (Random.value < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Adapt_Starfall>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Adapt_Starfall);"
+      ],
+      "cooldown": 8.1818,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.55,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Adapt_Starfall",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_IceBlock",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Adapt()",
+        "else if (hp_ratio < 0.9f && Random.value < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Adapt_IceBlock>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Adapt_IceBlock);"
+      ],
+      "cooldown": 11.8182,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.35,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_Primus_BossPrimusAeron_Adapt_IceBlock",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_Arbalest",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Adapt()",
+        "else if (hp_ratio < 0.8f && Random.value < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Adapt_Arbalest>() && in_range<At_Mon_Primus_BossPrimusAeron_Adapt_Arbalest>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Adapt_Arbalest);"
+      ],
+      "cooldown": 13.6364,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 20,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Adapt_Arbalest",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Rage_MassSilence",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Rage()",
+        "if (num < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Rage_MassSilence>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Rage_MassSilence);"
+      ],
+      "cooldown": 14.5455,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Rage_MassSilence_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Rage_MassDelusion",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Rage()",
+        "else if (num < 0.5f && ready<At_Mon_Primus_BossPrimusAeron_Rage_MassDelusion>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Rage_MassDelusion);"
+      ],
+      "cooldown": 54.5455,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1.5,
+      "channel_duration": 2,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Rage_MassDelusion",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Rage_DashAttack",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate_Rage()",
+        "else if (num < 0.75f && Random.value < 0.4f && ready<At_Mon_Primus_BossPrimusAeron_Rage_DashAttack>())",
+        "    CAST(At_Mon_Primus_BossPrimusAeron_Rage_DashAttack);"
+      ],
+      "cooldown": 7.2727,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.65,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 4,
+        "length": 15,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Rage_DashAttack",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Force_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 2.7273,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.9091,
+      "channel_duration": 0.6818,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 0,
+        "length": 6,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Force_Atk",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_IceClaw",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Primus_BossPrimusAeron AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 1.8182,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 1,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 120,
+        "radius": 8,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Adapt_IceClaw",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Rage_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 3.6364,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 1,
+        "length": 6.5,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Rage_Atk",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Primus_BossPrimusAeron_Adapt_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 2.7273,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.5455,
+      "channel_duration": 0.8182,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 11,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 15,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Primus_BossPrimusAeron_Adapt_Atk",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}

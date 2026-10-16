@@ -1,0 +1,36 @@
+# ============ Python（datamining/） ============
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# ============ .NET（modding/） ============
+# 编译产物；例外：modding/BossPracticeOverlay/BossPracticeOverlay.dll 有意入库
+modding/**/bin/
+modding/**/obj/
+modding/**/bin-check/
+modding/**/bin-stubs/
+modding/tools/fake-managed/
+*.user
+*.suo
+
+# ============ 游戏文件 / 拆包中间结果（体积大且含版权物，不入库） ============
+# 反编译缓存、游戏 DLL、ModTemplate 等参考材料
+ref/
+PLAN.md
+# RawData 提取的原始 JSON、Unity 资产 dump（1.8G+）
+datamining/raw_game_data/
+datamining/raw_game_data_unity/
+# extract_raw / extract_unity_pools 的中间落盘（重构前的原始 dict 与类型树）
+datamining/processed_data/raw/
+datamining/processed_data/unity_dump/
+
+# ============ 编辑器 / 系统杂物 ============
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log

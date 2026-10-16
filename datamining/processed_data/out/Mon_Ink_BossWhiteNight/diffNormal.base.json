@@ -1,0 +1,551 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_Ink_BossWhiteNight",
+  "monster_type": "Boss",
+  "difficulty": "diffNormal",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 10800,
+    "attack_damage": 45,
+    "ability_power": 45,
+    "armor": 0,
+    "ability_haste": 0,
+    "attack_speed_multiplier": 1,
+    "movement_speed": 5,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 100,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "variant_note": "this variant spawns when the run's randomly picked hard-variant boss zones include this zone (difficulty.hardVariantBossZones = 0)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_Cataclysm",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 0,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in PoolAIUpdate()",
+        "if (canUseSpecialAttack && ready<At_Mon_Ink_BossWhiteNight_Cataclysm>())",
+        "    CAST(At_Mon_Ink_BossWhiteNight_Cataclysm);"
+      ],
+      "cooldown": 80,
+      "minimum_delay": 0,
+      "max_charges": 0,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": false,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNight_Cataclysm",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 1,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 1
+        },
+        "ignoreBlock": true,
+        "ignoreAbilityLock": true,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": false,
+        "alwaysCastImmediately": true,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 1
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_RageInstance_RockSpawner",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 1,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in PoolAIUpdate()",
+        "if (!(triggerInstance is At_Mon_Special_BossMaw_Catacylsm))",
+        "    if (triggerInstance is At_Mon_Ink_BossWhiteNight_RageInstance_RockSpawner)",
+        "        if (_isRage && ready<At_Mon_Ink_BossWhiteNight_RageInstance_RockSpawner>())",
+        "            CAST(At_Mon_Ink_BossWhiteNight_RageInstance_RockSpawner);"
+      ],
+      "cooldown": 30,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNight_RageInstance_RockSpawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 1,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 1
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_Oppression",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 2,
+        "chance": 0.3,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 15,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.1,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 7,
+        "width": 3,
+        "length": 10,
+        "angle": 0,
+        "radius": 2.5,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNight_Oppression",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_DestructionWave",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 3,
+        "chance": 0.3,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 25,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": 0,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 3,
+      "channel_duration": 0.3,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 9,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNight_DestructionWave",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 1,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": false,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_BuddhasPalm",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 4,
+        "chance": 0.7,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 3,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.05,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 9,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNIght_BuddhasPalm_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 2,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 8,
+        "width": 0,
+        "length": 8,
+        "angle": 0,
+        "radius": 2,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNight_Ready",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 1,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Ink_BossWhiteNight_AltAtk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 2.8,
+      "minimum_delay": 1.5,
+      "max_charges": 2,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": true,
+      "cast_method": {
+        "type": 3,
+        "range": 8.5,
+        "width": 2,
+        "length": 12,
+        "angle": 0,
+        "radius": 1,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Ink_BossWhiteNight_AltAtk_Ready",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 0,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": false,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}

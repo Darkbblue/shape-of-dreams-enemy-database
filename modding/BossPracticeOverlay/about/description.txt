@@ -1,0 +1,1 @@
+Practice overlay for boss fights. Tracks the current hero boss (Monster.type == Boss) and logs every cast (trigger#config, ability instance, animation clip, live cooldown multiplier) to the developer F1 log viewer, using the same internal names as the boss move database so log lines can be looked up directly.

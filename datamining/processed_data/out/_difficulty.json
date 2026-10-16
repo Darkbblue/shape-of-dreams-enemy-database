@@ -1,0 +1,556 @@
+{
+  "schema_version": 3,
+  "source": "unity_dump/difficulty.json (DewDifficultySettings assets)",
+  "gameplay_experience_settings": {
+    "default_asset": "GSS - Default",
+    "cooldownFloorRatioByAbilityHaste": 0.0
+  },
+  "difficulties": {
+    "diffEasy": {
+      "m_GameObject": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "file_id": 1,
+        "path_id": "-3707280604897746983"
+      },
+      "m_Name": "diffEasy",
+      "difficultyColor": {
+        "r": 0.7677465081214905,
+        "g": 0.9056603908538818,
+        "b": 0.39643996953964233,
+        "a": 1.0
+      },
+      "icon": {
+        "file_id": 0,
+        "path_id": "3159406482052554776"
+      },
+      "iconScale": 0.949999988079071,
+      "maxPopulationMultiplier": 1.0,
+      "regenOrbChanceMultiplier": 1.600000023841858,
+      "predictionStrengthCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.023400411009788513,
+            "outSlope": 0.023400411009788513,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.24166665971279144
+          },
+          {
+            "time": 0.8997001647949219,
+            "value": 0.10081425309181213,
+            "inSlope": 0.4939134120941162,
+            "outSlope": 0.4939134120941162,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 0.9745473861694336,
+            "value": 0.2555771470069885,
+            "inSlope": 0.9082030057907104,
+            "outSlope": 0.9082030057907104,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inSlope": 3.336474657058716,
+            "outSlope": 3.336474657058716,
+            "weightedMode": 0,
+            "inWeight": 0.04166668653488159,
+            "outWeight": 0.0
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "healRawMultiplier": 1.0,
+      "scoreMultiplier": 1.0,
+      "specialSkillChanceMultiplier": 0.10000000149011612,
+      "bossKillBonusStardust": 0,
+      "hardVariantBossZones": 0,
+      "enableBleedOuts": 0,
+      "lostSoulDistance": {
+        "x": 1,
+        "y": 1
+      },
+      "beneficialNodeMultiplier": 1.5,
+      "harmfulNodeMultiplier": 1.0,
+      "hunterSpreadChance": 0.699999988079071,
+      "enemyHealthPercentage": -15.0,
+      "enemyPowerPercentage": -20.0,
+      "enemyMovementSpeedPercentage": -10.0,
+      "enemyAttackSpeedPercentage": -15.0,
+      "enemyAbilityHasteFlat": -10.0,
+      "miniBossArmor": 0.0,
+      "heroicBossArmor": 0.0,
+      "healthFactorBeforeLoop": 0.6499999761581421,
+      "healthFactorAfterLoop": 1.0,
+      "damageFactorBeforeLoop": 0.699999988079071,
+      "damageFactorAfterLoop": 0.8999999761581421,
+      "positionSampleCount": 5,
+      "positionSampleLagBehindFrames": 2,
+      "positionSampleInterval": 0.10000000149011612,
+      "unity_path_id": "6608218596070399023",
+      "class_name": "DewDifficultySettings"
+    },
+    "diffHard": {
+      "m_GameObject": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "file_id": 1,
+        "path_id": "-3707280604897746983"
+      },
+      "m_Name": "diffHard",
+      "difficultyColor": {
+        "r": 0.849056601524353,
+        "g": 0.4757920801639557,
+        "b": 0.4757920801639557,
+        "a": 1.0
+      },
+      "icon": {
+        "file_id": 0,
+        "path_id": "1531959715664819208"
+      },
+      "iconScale": 1.0,
+      "maxPopulationMultiplier": 1.100000023841858,
+      "regenOrbChanceMultiplier": 0.8999999761581421,
+      "predictionStrengthCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.0
+          },
+          {
+            "time": 0.33000001311302185,
+            "value": 0.0,
+            "inSlope": -0.0038208188489079475,
+            "outSlope": -0.0038208188489079475,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.8211526274681091
+          },
+          {
+            "time": 0.7805861234664917,
+            "value": 0.391724169254303,
+            "inSlope": 1.277838945388794,
+            "outSlope": 1.277838945388794,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inSlope": 2.0,
+            "outSlope": 2.0,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.0
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "healRawMultiplier": 1.0,
+      "scoreMultiplier": 2.0,
+      "specialSkillChanceMultiplier": 0.5,
+      "bossKillBonusStardust": 4,
+      "hardVariantBossZones": 1,
+      "enableBleedOuts": 0,
+      "lostSoulDistance": {
+        "x": 2,
+        "y": 2
+      },
+      "beneficialNodeMultiplier": 0.800000011920929,
+      "harmfulNodeMultiplier": 1.0,
+      "hunterSpreadChance": 0.8500000238418579,
+      "enemyHealthPercentage": 10.0,
+      "enemyPowerPercentage": 13.0,
+      "enemyMovementSpeedPercentage": 7.5,
+      "enemyAttackSpeedPercentage": 10.0,
+      "enemyAbilityHasteFlat": 10.0,
+      "miniBossArmor": 0.0,
+      "heroicBossArmor": 0.0,
+      "healthFactorBeforeLoop": 1.0,
+      "healthFactorAfterLoop": 1.149999976158142,
+      "damageFactorBeforeLoop": 0.887499988079071,
+      "damageFactorAfterLoop": 1.149999976158142,
+      "positionSampleCount": 3,
+      "positionSampleLagBehindFrames": 0,
+      "positionSampleInterval": 0.10000000149011612,
+      "unity_path_id": "3333886050483981172",
+      "class_name": "DewDifficultySettings"
+    },
+    "diffLimbo": {
+      "m_GameObject": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "file_id": 1,
+        "path_id": "-3707280604897746983"
+      },
+      "m_Name": "diffLimbo",
+      "difficultyColor": {
+        "r": 0.9396226406097412,
+        "g": 0.37407609820365906,
+        "b": 0.37407609820365906,
+        "a": 1.0
+      },
+      "icon": {
+        "file_id": 0,
+        "path_id": "6308099309912724750"
+      },
+      "iconScale": 1.0,
+      "maxPopulationMultiplier": 1.2000000476837158,
+      "regenOrbChanceMultiplier": 0.8999999761581421,
+      "predictionStrengthCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.001342454575933516,
+            "outSlope": 0.001342454575933516,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 0.3306657373905182,
+            "value": 0.00044390372931957245,
+            "inSlope": 0.02224627695977688,
+            "outSlope": 0.02224627695977688,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inSlope": 1.4933586120605469,
+            "outSlope": 1.4933586120605469,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.0
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "healRawMultiplier": 0.550000011920929,
+      "scoreMultiplier": 4.0,
+      "specialSkillChanceMultiplier": 1.0,
+      "bossKillBonusStardust": 7,
+      "hardVariantBossZones": 2,
+      "enableBleedOuts": 0,
+      "lostSoulDistance": {
+        "x": 2,
+        "y": 2
+      },
+      "beneficialNodeMultiplier": 0.6000000238418579,
+      "harmfulNodeMultiplier": 1.0,
+      "hunterSpreadChance": 0.8999999761581421,
+      "enemyHealthPercentage": 25.0,
+      "enemyPowerPercentage": 32.0,
+      "enemyMovementSpeedPercentage": 15.0,
+      "enemyAttackSpeedPercentage": 20.0,
+      "enemyAbilityHasteFlat": 25.0,
+      "miniBossArmor": 45.0,
+      "heroicBossArmor": 45.0,
+      "healthFactorBeforeLoop": 1.0,
+      "healthFactorAfterLoop": 1.2000000476837158,
+      "damageFactorBeforeLoop": 0.949999988079071,
+      "damageFactorAfterLoop": 1.25,
+      "positionSampleCount": 3,
+      "positionSampleLagBehindFrames": 0,
+      "positionSampleInterval": 0.10000000149011612,
+      "unity_path_id": "2575085939049394383",
+      "class_name": "DewDifficultySettings"
+    },
+    "diffNightmare": {
+      "m_GameObject": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "file_id": 1,
+        "path_id": "-3707280604897746983"
+      },
+      "m_Name": "diffNightmare",
+      "difficultyColor": {
+        "r": 0.7304684519767761,
+        "g": 0.5220362544059753,
+        "b": 0.8867924213409424,
+        "a": 1.0
+      },
+      "icon": {
+        "file_id": 0,
+        "path_id": "-5710909035488471355"
+      },
+      "iconScale": 1.0399999618530273,
+      "maxPopulationMultiplier": 1.2000000476837158,
+      "regenOrbChanceMultiplier": 0.8999999761581421,
+      "predictionStrengthCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.001342454575933516,
+            "outSlope": 0.001342454575933516,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 0.3306657373905182,
+            "value": 0.00044390372931957245,
+            "inSlope": 0.02224627695977688,
+            "outSlope": 0.02224627695977688,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inSlope": 1.4933586120605469,
+            "outSlope": 1.4933586120605469,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.0
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "healRawMultiplier": 0.550000011920929,
+      "scoreMultiplier": 4.0,
+      "specialSkillChanceMultiplier": 1.0,
+      "bossKillBonusStardust": 7,
+      "hardVariantBossZones": 2,
+      "enableBleedOuts": 0,
+      "lostSoulDistance": {
+        "x": 2,
+        "y": 2
+      },
+      "beneficialNodeMultiplier": 0.6000000238418579,
+      "harmfulNodeMultiplier": 1.0,
+      "hunterSpreadChance": 0.8999999761581421,
+      "enemyHealthPercentage": 25.0,
+      "enemyPowerPercentage": 32.0,
+      "enemyMovementSpeedPercentage": 15.0,
+      "enemyAttackSpeedPercentage": 20.0,
+      "enemyAbilityHasteFlat": 25.0,
+      "miniBossArmor": 25.0,
+      "heroicBossArmor": 25.0,
+      "healthFactorBeforeLoop": 1.0,
+      "healthFactorAfterLoop": 1.2000000476837158,
+      "damageFactorBeforeLoop": 0.949999988079071,
+      "damageFactorAfterLoop": 1.25,
+      "positionSampleCount": 3,
+      "positionSampleLagBehindFrames": 0,
+      "positionSampleInterval": 0.10000000149011612,
+      "unity_path_id": "-8938079866178073897",
+      "class_name": "DewDifficultySettings"
+    },
+    "diffNormal": {
+      "m_GameObject": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "file_id": 1,
+        "path_id": "-3707280604897746983"
+      },
+      "m_Name": "diffNormal",
+      "difficultyColor": {
+        "r": 0.9056603908538818,
+        "g": 0.8321966528892517,
+        "b": 0.5416874289512634,
+        "a": 1.0
+      },
+      "icon": {
+        "file_id": 0,
+        "path_id": "-6642145466404940586"
+      },
+      "iconScale": 0.9800000190734863,
+      "maxPopulationMultiplier": 1.0,
+      "regenOrbChanceMultiplier": 1.0,
+      "predictionStrengthCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.0,
+            "outSlope": 0.0,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.0
+          },
+          {
+            "time": 0.33000001311302185,
+            "value": 0.0,
+            "inSlope": 0.002289630239829421,
+            "outSlope": 0.002289630239829421,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.6969695091247559
+          },
+          {
+            "time": 0.9206523299217224,
+            "value": 0.4103892147541046,
+            "inSlope": 1.2995411157608032,
+            "outSlope": 1.2995411157608032,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inSlope": 2.9971718788146973,
+            "outSlope": 2.9971718788146973,
+            "weightedMode": 0,
+            "inWeight": 0.04166668653488159,
+            "outWeight": 0.0
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "healRawMultiplier": 1.0,
+      "scoreMultiplier": 1.5,
+      "specialSkillChanceMultiplier": 0.25,
+      "bossKillBonusStardust": 2,
+      "hardVariantBossZones": 0,
+      "enableBleedOuts": 0,
+      "lostSoulDistance": {
+        "x": 1,
+        "y": 2
+      },
+      "beneficialNodeMultiplier": 1.0,
+      "harmfulNodeMultiplier": 1.0,
+      "hunterSpreadChance": 0.800000011920929,
+      "enemyHealthPercentage": 0.0,
+      "enemyPowerPercentage": 0.0,
+      "enemyMovementSpeedPercentage": 0.0,
+      "enemyAttackSpeedPercentage": 0.0,
+      "enemyAbilityHasteFlat": 0.0,
+      "miniBossArmor": 0.0,
+      "heroicBossArmor": 0.0,
+      "healthFactorBeforeLoop": 0.800000011920929,
+      "healthFactorAfterLoop": 1.0,
+      "damageFactorBeforeLoop": 0.75,
+      "damageFactorAfterLoop": 0.8999999761581421,
+      "positionSampleCount": 4,
+      "positionSampleLagBehindFrames": 1,
+      "positionSampleInterval": 0.10000000149011612,
+      "unity_path_id": "6463039779207211001",
+      "class_name": "DewDifficultySettings"
+    },
+    "diffTutorial": {
+      "m_GameObject": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "m_Enabled": 1,
+      "m_Script": {
+        "file_id": 1,
+        "path_id": "-3707280604897746983"
+      },
+      "m_Name": "diffTutorial",
+      "difficultyColor": {
+        "r": 0.9058823585510254,
+        "g": 0.8313725590705872,
+        "b": 0.5411764979362488,
+        "a": 1.0
+      },
+      "icon": {
+        "file_id": 0,
+        "path_id": "-6642145466404940586"
+      },
+      "iconScale": 0.9800000190734863,
+      "maxPopulationMultiplier": 1.0,
+      "regenOrbChanceMultiplier": 0.0,
+      "predictionStrengthCurve": {
+        "m_Curve": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inSlope": 0.3499999940395355,
+            "outSlope": 0.3499999940395355,
+            "weightedMode": 0,
+            "inWeight": 0.0,
+            "outWeight": 0.3333333432674408
+          },
+          {
+            "time": 1.0,
+            "value": 0.3499999940395355,
+            "inSlope": 0.3499999940395355,
+            "outSlope": 0.3499999940395355,
+            "weightedMode": 0,
+            "inWeight": 0.3333333432674408,
+            "outWeight": 0.0
+          }
+        ],
+        "m_PreInfinity": 2,
+        "m_PostInfinity": 2,
+        "m_RotationOrder": 4
+      },
+      "healRawMultiplier": 1.0,
+      "scoreMultiplier": 0.0,
+      "specialSkillChanceMultiplier": 0.10000000149011612,
+      "bossKillBonusStardust": 0,
+      "hardVariantBossZones": 0,
+      "enableBleedOuts": 0,
+      "lostSoulDistance": {
+        "x": 0,
+        "y": 0
+      },
+      "beneficialNodeMultiplier": 1.0,
+      "harmfulNodeMultiplier": 1.0,
+      "hunterSpreadChance": 0.0,
+      "enemyHealthPercentage": 0.0,
+      "enemyPowerPercentage": 0.0,
+      "enemyMovementSpeedPercentage": 0.0,
+      "enemyAttackSpeedPercentage": 0.0,
+      "enemyAbilityHasteFlat": 0.0,
+      "miniBossArmor": 0.0,
+      "heroicBossArmor": 0.0,
+      "healthFactorBeforeLoop": 1.0,
+      "healthFactorAfterLoop": 1.0,
+      "damageFactorBeforeLoop": 1.0,
+      "damageFactorAfterLoop": 1.0,
+      "positionSampleCount": 5,
+      "positionSampleLagBehindFrames": 2,
+      "positionSampleInterval": 0.10000000149011612,
+      "unity_path_id": "-2338705495955019549",
+      "class_name": "DewDifficultySettings"
+    }
+  }
+}

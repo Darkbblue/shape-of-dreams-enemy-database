@@ -1,0 +1,390 @@
+{
+  "schema_version": 3,
+  "generated_at": "2026-10-16 08:08:16",
+  "monster_count": 61,
+  "boss_count": 14,
+  "bosses": [
+    "Mon_DarkCave_BossSeeker",
+    "Mon_Despair_BossAzurak",
+    "Mon_Forest_BossDemon",
+    "Mon_Ink_BossDarkMoon",
+    "Mon_Ink_BossWhiteNight",
+    "Mon_LavaLand_BossInfernus",
+    "Mon_Primus_BossPrimusAeron",
+    "Mon_Sky_BossNyx",
+    "Mon_SnowMountain_BossSkoll",
+    "Mon_Special_BossErebos",
+    "Mon_Special_BossLightElemental",
+    "Mon_Special_BossMaw",
+    "Mon_Special_BossObliviax",
+    "Mon_Special_BossPolaris"
+  ],
+  "monsters": {
+    "Mon_DarkCave_BossSeeker": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_DarkCave_BossSeeker"
+    },
+    "Mon_DarkCave_CaveBat": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DarkCave_CaveBat"
+    },
+    "Mon_DarkCave_CaveSpider": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DarkCave_CaveSpider"
+    },
+    "Mon_DarkCave_DarkElemental": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DarkCave_DarkElemental"
+    },
+    "Mon_DarkCave_NightOlm": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DarkCave_NightOlm"
+    },
+    "Mon_DarkCave_Oppressor": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DarkCave_Oppressor"
+    },
+    "Mon_DarkCave_SeekerHallucination": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DarkCave_SeekerHallucination"
+    },
+    "Mon_Despair_AzurakMonsterSpawner": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_BossAzurak"
+    },
+    "Mon_Despair_AzurakRollPillar": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_BossAzurak"
+    },
+    "Mon_Despair_BossAzurak": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_Despair_BossAzurak"
+    },
+    "Mon_Despair_Displacer": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_Displacer"
+    },
+    "Mon_Despair_DreadBug": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_DreadBug"
+    },
+    "Mon_Despair_ParalyticFly": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_ParalyticFly"
+    },
+    "Mon_Despair_UnstableRat": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_UnstableRat"
+    },
+    "Mon_Despair_WretchedArtillery": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Despair_WretchedArtillery"
+    },
+    "Mon_DreamTeller": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_DreamTeller"
+    },
+    "Mon_Forest_BossDemon": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_Forest_BossDemon"
+    },
+    "Mon_Forest_Hound": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Forest_Hound"
+    },
+    "Mon_Forest_Scarab": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Forest_Scarab"
+    },
+    "Mon_Forest_SpiderSpitter": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Forest_SpiderSpitter"
+    },
+    "Mon_Forest_SpiderWarrior": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Forest_SpiderWarrior"
+    },
+    "Mon_Forest_Treant": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Forest_Treant"
+    },
+    "Mon_GoldenLizard_ElusiveLizard": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "GoldenLizard"
+    },
+    "Mon_Ink_Archer": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_Archer"
+    },
+    "Mon_Ink_BossDarkMoon": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_Ink_BossDarkMoon"
+    },
+    "Mon_Ink_BossDarkMoonHallucination": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_BossDarkMoon"
+    },
+    "Mon_Ink_BossWhiteNight": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_Ink_BossWhiteNight"
+    },
+    "Mon_Ink_BossWhiteNightHallucination": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_BossWhiteNight"
+    },
+    "Mon_Ink_DivineAnimal": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_DivineAnimal"
+    },
+    "Mon_Ink_EgoSword": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_EgoSword"
+    },
+    "Mon_Ink_GhostBlade": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_GhostBlade"
+    },
+    "Mon_Ink_GhostSpear": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Ink_GhostSpear"
+    },
+    "Mon_LavaLand_BossInfernus": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_LavaLand_BossInfernus"
+    },
+    "Mon_LavaLand_FireElemental": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_LavaLand_FireElmental"
+    },
+    "Mon_LavaLand_InfernoSpider": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_LavaLand_InfernoSpider"
+    },
+    "Mon_LavaLand_InfernusPillar": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_LavaLand_InfernusPillar"
+    },
+    "Mon_LavaLand_Magmadon": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_LavaLand_Magmadon"
+    },
+    "Mon_LavaLand_SuperheatedWolf": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_LavaLand_SuperheatedWolf"
+    },
+    "Mon_Polaris": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Polaris"
+    },
+    "Mon_Primus_BossPrimusAeron": {
+      "monster_type": "Boss",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Primus_BossPrimusAeron"
+    },
+    "Mon_RedGiant": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_RedGiant"
+    },
+    "Mon_RedMan": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_RedMan"
+    },
+    "Mon_Sky_Baam": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Sky_Baam"
+    },
+    "Mon_Sky_BigBaam_Regular": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Sky_BigBaam"
+    },
+    "Mon_Sky_BigBaam_Rooter": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Sky_BigBaam"
+    },
+    "Mon_Sky_BossNyx": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_Sky_BossNyx"
+    },
+    "Mon_Sky_LittleBaam": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Sky_LittleBaam"
+    },
+    "Mon_Sky_StarSeed": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Sky_StarSeed"
+    },
+    "Mon_SnowMountain_BossSkoll": {
+      "monster_type": "Boss",
+      "pool_count": 2,
+      "has_hard_variant": true,
+      "source_dir": "Mon_SnowMountain_BossSkoll"
+    },
+    "Mon_SnowMountain_IceElemental": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_SnowMountain_IceElemental"
+    },
+    "Mon_SnowMountain_LivingShards": {
+      "monster_type": "Lesser",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_SnowMountain_LivingShards"
+    },
+    "Mon_SnowMountain_Scavenger": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_SnowMountain_Scavenger"
+    },
+    "Mon_SnowMountain_SnowWolf": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_SnowMountain_SnowWolf"
+    },
+    "Mon_SnowMountain_VikingWarrior": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_SnowMountain_VikingWarrior"
+    },
+    "Mon_Special_AmbushSpawner": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": null
+    },
+    "Mon_Special_BossErebos": {
+      "monster_type": "Boss",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Special_BossErebos"
+    },
+    "Mon_Special_BossLightElemental": {
+      "monster_type": "Boss",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Special_BossLightElemental"
+    },
+    "Mon_Special_BossMaw": {
+      "monster_type": "Boss",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Special_BossMaw"
+    },
+    "Mon_Special_BossObliviax": {
+      "monster_type": "Boss",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Special_BossObliviax"
+    },
+    "Mon_Special_BossPolaris": {
+      "monster_type": "Boss",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Special_BossPolaris"
+    },
+    "Mon_Special_ObliviaxHallucination": {
+      "monster_type": "Normal",
+      "pool_count": 0,
+      "has_hard_variant": false,
+      "source_dir": "Mon_Special_ObliviaxHallucination"
+    }
+  }
+}

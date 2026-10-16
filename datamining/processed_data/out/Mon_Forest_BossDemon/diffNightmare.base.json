@@ -1,0 +1,402 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_Forest_BossDemon",
+  "monster_type": "Boss",
+  "difficulty": "diffNightmare",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 10000,
+    "attack_damage": 52.8,
+    "ability_power": 52.8,
+    "armor": 25,
+    "ability_haste": 25,
+    "attack_speed_multiplier": 1.2,
+    "movement_speed": 5.06,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 100,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "variant_note": "this variant spawns when the run's randomly picked hard-variant boss zones include this zone (difficulty.hardVariantBossZones = 2)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_Forest_BossDemon_Blink",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 0,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 4.8,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.4,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 16,
+        "width": 0,
+        "length": 8,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": true
+      },
+      "instance": "Ai_Mon_Forest_BossDemon_Blink",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 1,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 2,
+          "useCustomParameters": 1,
+          "delay": 1.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Forest_BossDemon_DelayedAtk",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 1,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 1.12,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.1,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 6,
+        "width": 0,
+        "length": 3.5,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Forest_BossDemon_DelayedAtk",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": false,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 1,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Forest_BossDemon_MainSkill",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 2,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 11.2,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 14,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Forest_BossDemon_MainSkill_SpawnMissiles",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Forest_BossDemon_MainSkill",
+      "config_index": 1,
+      "selection": {
+        "mode": "pool",
+        "order": 2,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 11.2,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 3,
+      "channel_duration": 1.2,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 14,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Forest_BossDemon_MainSkill_Stomp",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Forest_BossDemon_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 1.1667,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.4167,
+      "channel_duration": 0.4167,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 0,
+        "length": 5.5,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Forest_BossDemon_Atk",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 1,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}

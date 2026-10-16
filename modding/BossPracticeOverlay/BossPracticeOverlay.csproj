@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- net48: the game's assemblies (e.g. 0Harmony 2.3.6) are built against .NET Framework 4.8. -->
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>BossPracticeOverlay</AssemblyName>
+    <RootNamespace>BossPracticeOverlay</RootNamespace>
+    <Version>0.1.0</Version>
+    <Deterministic>true</Deterministic>
+    <DebugType>embedded</DebugType>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <!--
+      Path to the game's Managed folder. Pass it on the command line, e.g.:
+        dotnet build -c Release -p:GameManaged="C:\Program Files (x86)\Steam\steamapps\common\Shape of Dreams\ShapeOfDreams_Data\Managed"
+    -->
+    <GameManaged Condition="'$(GameManaged)' == ''">$(SODGameManaged)</GameManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!--
+    Reference every game assembly except the ones that clash with the BCL targeting pack.
+    Done in a target: metadata batching (%(GameDll.Identity) -> HintPath) only binds
+    correctly inside targets, not in static ItemGroups.
+  -->
+  <Target Name="AddGameReferences"
+          BeforeTargets="ResolveAssemblyReferences"
+          Condition="'$(GameManaged)' != '' And Exists('$(GameManaged)\Dew.Core.dll')">
+    <ItemGroup>
+      <GameDll Include="$(GameManaged)\*.dll"
+               Exclude="$(GameManaged)\mscorlib.dll;$(GameManaged)\netstandard.dll;$(GameManaged)\System*.dll;$(GameManaged)\Microsoft*.dll;$(GameManaged)\Mono*.dll;$(GameManaged)\UnityEditor*.dll" />
+      <Reference Include="@(GameDll->'%(Filename)')">
+        <HintPath>%(GameDll.Identity)</HintPath>
+        <Private>false</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="RequireGameManaged"
+          BeforeTargets="ResolveAssemblyReferences"
+          Condition="!Exists('$(GameManaged)\Dew.Core.dll')">
+    <Error Text="GameManaged is not set or does not contain Dew.Core.dll. Pass: -p:GameManaged=&quot;...ShapeOfDreams_Data\Managed&quot;" />
+  </Target>
+
+  <!--
+    Copy the DLL to the project root so this folder doubles as the mod folder:
+    <Game>/Mods/BossPracticeOverlay/{BossPracticeOverlay.dll, about/metadata.json}.
+  -->
+  <Target Name="PlaceDllForInstall" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)" />
+    <Message Importance="high" Text="Placed $(TargetFileName) next to about/ — folder is ready to copy into the game's Mods directory." />
+  </Target>
+
+</Project>

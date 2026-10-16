@@ -1,0 +1,117 @@
+# Boss Practice Overlay (Shape of Dreams)
+
+练习用 overlay mod：自动跟踪当前英雄首领（`Monster.type == Boss`），把每次出招写入游戏自带
+的 **F1 日志查看器**。所有名字使用资源内部名，与 `datamining/processed_data/out/` 的 boss
+数据库逐字段互查。
+
+不做 Harmony patch、不改玩法（无需 `isAlteringGameplay`）、单文件实现。
+
+## 日志格式 ↔ 数据库对照
+
+Boss 行（进入 boss 房 / 更换跟踪目标时输出一次，常驻到下一事件）：
+
+```
+[SOD] Boss: Mon_Ink_BossWhiteNight (diff=diffNormal, variant=base, zoneHard=False, netId=12345) [entity.name=Mon_Ink_BossWhiteNight(Clone)]
+```
+
+| 字段 | 含义 | 数据库对应 |
+|------|------|-----------|
+| `Mon_X` | boss 资源内部名（`GetOriginalName()`） | `out/<Mon_X>/` 目录名、JSON `boss` |
+| `diff=` | 难度资产名 | 文件名 `<difficulty>.<variant>.json`（diffTutorial/diffEasy/diffNormal/diffHard/diffNightmare/diffLimbo） |
+| `variant=` | 招式池选择：`base` / `hard_variant` / 无池为 `none` | 文件名 variant 段 |
+| `zoneHard=` | `ZoneManager.isCurrentZoneHardVariant` 交叉验证 | — |
+| `netId=` | `persistentNetId`（双 boss 房固定跟踪最小者） | — |
+| `[entity.name=…]` | 原始 `Object.name` 兜底（核对命名契约） | — |
+
+Cast 行（每次 `EntityEvent_OnCastComplete`）：
+
+```
+[SOD] Cast: At_Mon_Ink_BossWhiteNight_Cataclysm#0 abi=Abi_Xxx anim=Mon_XXX_Atk5 (0.12s/1.40s) cdMul=1 locks=lock_cast+lock_cd
+```
+
+| 字段 | 含义 | 数据库对应 |
+|------|------|-----------|
+| `At_X#N` | 招式 trigger 名 + config 序号 | `moves[].name` + `moves[].config_index` |
+| `abi=` | 实际执行的 AbilityInstance 资源名 | `moves[].instance` |
+| `anim=` | 此刻播放的动画片段 `resourceId`（运行时才有，DB 只记 set/null） | — |
+| `(e/d)` | 动画 `elapsedTime/duration` | — |
+| `cdMul=` | `trigger.GetCooldownTimeMultiplier(configIndex)` 实时值；**实际冷却 ≈ DB cooldown × cdMul**（DB 已含出生基线，战斗内激怒/增益会偏离） | `moves[].can_receive_cooldown_reduction` |
+| `locks=` | 仅当存在时输出：一场只放一次的锁定标志 | `moves[].lock_cast_until_killed` / `lock_cooldown_until_killed` |
+
+其他行为：
+
+- 无 boss / 杂兵战：不输出。离开游戏或 boss 死亡后输出一次 `[SOD] no boss (…)`。
+- 双 boss 房：跟踪 `persistentNetId` 最小者；其死亡后自动切换到另一只。
+- 招式池中途变化（正常不会发生）会输出 `Boss pool changed` 行。
+- 全部轮询/事件包 try/catch：异常 `LogError` 一次并停用自身，绝不上抛。
+
+## 构建（游戏 PC，Windows）
+
+需要 .NET SDK 8+（`dotnet --version`）。首次 build 会从 NuGet 拉
+`Microsoft.NETFramework.ReferenceAssemblies`。
+
+```bat
+cd modding\BossPracticeOverlay
+dotnet build -c Release -p:GameManaged="C:\Program Files (x86)\Steam\steamapps\common\Shape of Dreams\Shape of Dreams_Data\Managed"
+```
+
+目标框架是 **net48**：游戏自带程序集（如 0Harmony 2.3.6）按 .NET Framework 4.8 构建。
+若把 csproj 改回 net472 会得到 MSB3274/MSB3275 警告并连带 CS0246（Dew.Core 解析失败）。
+
+产物：`bin\Release\net48\BossPracticeOverlay.dll`，且 post-build 会把 DLL 复制到工程根目录
+（`about/` 旁边），因此整个 `BossPracticeOverlay/` 文件夹本身就是可安装的 mod 目录。
+
+> 只安装用**真实游戏 Managed 目录**构建出的 DLL。`tools/verify-local.sh`（见下）会在本机
+> 用 stub 程序集做编译验证，其产物 **不可安装**（stub 的 `Debug.Log` 是空实现，装了也不输出）。
+
+## 本机编译验证（无游戏目录时，WSL / Git Bash）
+
+`tools/verify-local.sh` 用两份最小 stub（`UnityEngine.CoreModule`、`Mirror`）+ 仓库内的
+`ref/gamefiles/managed/Dew.Core.dll`、`Dew.Contents.dll` 做一次完整类型检查：
+
+```bash
+modding/tools/verify-local.sh
+```
+
+两项检查：
+1. `tools/build-check/`（check 工程）——mod 源码 × 真实 Dew DLL，专抓 API 名字/签名改动；
+2. 用 stub 拼出的 fake Managed 跑通真实 csproj 的引用管线（跑完即清理产物）。
+
+游戏版本更新后先跑这个，能提前发现改名字段。
+
+## 安装
+
+把 `modding/BossPracticeOverlay/` 整个文件夹（`BossPracticeOverlay.dll` + `about/`；csproj、
+README 等其余文件对加载无影响，可留可删）复制为：
+
+```
+<游戏目录>/Mods/BossPracticeOverlay/
+├── BossPracticeOverlay.dll      ← 真实 Managed 构建产物
+└── about/
+    ├── metadata.json
+    └── description.txt
+```
+
+游戏内：**游戏性设置 → 开启开发者模式**，标题界面 Mods 管理器确认已加载；进游戏按 **F1**
+打开日志查看器（` 键开控制台）。spawn boss（控制台命令或正常推进）即可看到输出。
+
+## 实现要点（反编译已核对）
+
+- 入口 `ModBehaviour`（`Dew.Core.dll`），DLL 经 `about/metadata.json` 的 `assemblies` 注入。
+- boss 检测：`ActorManager.instance.allEntities` 过滤 `Monster` 且
+  `type == MonsterType.Boss`（枚举 Lesser/Normal/MiniBoss/Boss；MiniBoss 天然排除）。
+- 出招事件：`Entity.EntityEvent_OnCastComplete : SafeAction<EventInfoCast>`，事件直接给出
+  `trigger`/`configIndex`/`instance`，无需动画反查；实体销毁时 SafeAction 自动 Clear，
+  跟踪切换/OnDestroy 时显式 `-=` 退订。
+- 变体：`monster.currentPoolIndex`（0=base，1=hard_variant，`SelectAbilityPool()` 写入的
+  运行时值）；`abilityPools.Count <= 1` 视为无变体。
+- 难度：`NetworkedManagerBase<GameManager>.instance.difficulty.name`（ScriptableObject 资产名，
+  与 DB 文件名前缀一致）。
+
+## 已知坑位（继承自 mod-notes.md）
+
+- `At_Mon_Special_BossMaw_Catacylsm` 是游戏原生 typo，勿"顺手修正"。
+- `Mon_SnowMountain_BossSkoll_Capture` 反编译无施法点（疑似预制体事件驱动）——它是否触发
+  `OnCastComplete` 是待实测悬案；若实战中该招式不出日志，属于已知例外。
+- 多人客户端（非 host）不执行 server 出招路径，只看得到 Boss 行看不到 Cast 行；练习场景
+  本机即 host，不受影响。

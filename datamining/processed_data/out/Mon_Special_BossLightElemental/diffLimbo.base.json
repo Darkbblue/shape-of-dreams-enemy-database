@@ -1,0 +1,317 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_Special_BossLightElemental",
+  "monster_type": "Boss",
+  "difficulty": "diffLimbo",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 16500,
+    "attack_damage": 72.6,
+    "ability_power": 72.6,
+    "armor": 45,
+    "ability_haste": 25,
+    "attack_speed_multiplier": 1.2,
+    "movement_speed": 0,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 0,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "ai_logic_note": "all moves are driven by Mon_Special_BossLightElemental AI code (no ability pool)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_Special_BossLightElemental_Summon",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossLightElemental AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (True && ready<At_Mon_Special_BossLightElemental_Summon>() && in_range<At_Mon_Special_BossLightElemental_Summon>())",
+        "    CAST(At_Mon_Special_BossLightElemental_Summon);"
+      ],
+      "cooldown": 16,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 40,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossLightElemental_Summon",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossLightElemental_BeamBarrage",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossLightElemental AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (Time.time - _lastMainSkillUseTime > 35 - 12f * _skillChanceMultiplier)",
+        "    if (Random.value < 0.75f && True && num < 0.66 + 0.1f * _skillChanceMultiplier && ready<At_Mon_Special_BossLightElemental_BeamBarrage>() && in_range<At_Mon_Special_BossLightElemental_BeamBarrage>())",
+        "        CAST(At_Mon_Special_BossLightElemental_BeamBarrage);"
+      ],
+      "cooldown": 3.2,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 2,
+        "range": 0,
+        "width": 0,
+        "length": 40,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossLightElemental_BeamBarrage",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 2,
+          "useCustomParameters": 1,
+          "delay": 0.5,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossLightElemental_Lightning",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossLightElemental AI code"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (Time.time - _lastMainSkillUseTime > 35 - 12f * _skillChanceMultiplier)",
+        "    if (True && num < 0.85 && ready<At_Mon_Special_BossLightElemental_Lightning>() && in_range<At_Mon_Special_BossLightElemental_Lightning>())",
+        "        CAST(At_Mon_Special_BossLightElemental_Lightning);"
+      ],
+      "cooldown": 3.2,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 40,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossLightElemental_Lightning_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_Special_BossLightElemental_BeamAtk",
+      "config_index": 0,
+      "selection": {
+        "mode": "ai_class",
+        "note": "cast by Mon_Special_BossLightElemental AI code"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// in AIUpdate()",
+        "if (Time.time - _lastMainSkillUseTime > 35 - 12f * _skillChanceMultiplier)",
+        "if (True && ready<At_Mon_Special_BossLightElemental_BeamAtk>() && Helper_IsTargetInRangeOfAttack())",
+        "        CAST(At_Mon_Special_BossLightElemental_BeamAtk);"
+      ],
+      "cooldown": 2.5,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 1,
+        "length": 40,
+        "angle": 0,
+        "radius": 40,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_Special_BossLightElemental_BeamAtk_Spawner",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 1,
+          "delay": 1.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}

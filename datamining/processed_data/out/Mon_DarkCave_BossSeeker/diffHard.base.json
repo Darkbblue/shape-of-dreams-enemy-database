@@ -1,0 +1,622 @@
+{
+  "schema_version": 3,
+  "boss": "Mon_DarkCave_BossSeeker",
+  "monster_type": "Boss",
+  "difficulty": "diffHard",
+  "variant": "base",
+  "generated_at": "2026-10-16",
+  "stats": {
+    "max_health": 9680,
+    "attack_damage": 56.5,
+    "ability_power": 56.5,
+    "armor": 0,
+    "ability_haste": 10,
+    "attack_speed_multiplier": 1.1,
+    "movement_speed": 5.375,
+    "crit_chance": 0,
+    "tenacity": 0,
+    "max_mana": 100,
+    "health_regen": 0,
+    "mana_regen": 0
+  },
+  "variant_note": "this variant spawns when the run's randomly picked hard-variant boss zones include this zone (difficulty.hardVariantBossZones = 1)",
+  "reading_notes": {
+    "selection.order": "AIUpdate walks pool entries in order; first valid entry casts",
+    "selection.chance": "per-second probability gate",
+    "hp_window": "normalized health bounds; move only casts inside the window",
+    "cooldown": "already scaled for this difficulty (attack-speed for AttackTrigger moves, ability haste for others when can_receive_cooldown_reduction)",
+    "minimum_delay": "unscaled by the engine",
+    "instance": "AbilityInstance resource executing the move's effect (details in unity_dump)",
+    "cast_logic": "pseudo-code from the decompiled AI class with constants inlined: ready<T>() = cooldown ready + not blocked; in_range<T>() = target inside cast range; CAST<T>() = execute; rand = 0..1 roll; dt = frame delta time; hp_ratio = boss health fraction"
+  },
+  "moves": [
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_TunnelVision",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 0,
+        "chance": 1,
+        "hp_window": {
+          "enabled": true,
+          "min": 0,
+          "max": 0.4
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 45.4545,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.25,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": true,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_DarkCave_BossSeeker_TunnelVision",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_Hallucination",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 1,
+        "chance": 1,
+        "hp_window": {
+          "enabled": true,
+          "min": 0,
+          "max": 0.75
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 45.4545,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.35,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": true,
+      "lock_cast_until_killed": true,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_DarkCave_BossSeeker_Hallucination",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_RedFissure",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 2,
+        "chance": 1,
+        "hp_window": {
+          "enabled": true,
+          "min": 0,
+          "max": 0.75
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 11.3636,
+      "minimum_delay": 0,
+      "max_charges": 3,
+      "start_charges": -1,
+      "added_charges": 3,
+      "mana_cost": 0,
+      "post_delay": 1,
+      "channel_duration": 1.3,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 4,
+        "range": 40,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_DarkCave_BossSeeker_RedFissure",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_GreenChaserOrb",
+      "config_index": 0,
+      "selection": {
+        "mode": "pool",
+        "order": 3,
+        "chance": 1,
+        "hp_window": {
+          "enabled": false,
+          "min": 0,
+          "max": 1
+        },
+        "note": "AIUpdate walks pool entries in order; first entry passing chance roll, cooldown-ready, range and HP window checks is cast"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 7.2727,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": 0,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 2.5,
+      "channel_duration": 1.2,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 40,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_DarkCave_BossSeeker_GreenChaserOrb",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 3,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_BlinkBarrage",
+      "config_index": 0,
+      "selection": {
+        "mode": "reactive",
+        "note": "cast by Mon_DarkCave_BossSeeker AI code outside the ability pool"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in PoolAIUpdate()",
+        "if (_lastBlinkNormalizedHealth - hp_ratio >= 0.1)",
+        "    if (hp_ratio < 0.5)",
+        "        if (ready<At_Mon_DarkCave_BossSeeker_BlinkBarrage>())",
+        "            CAST(At_Mon_DarkCave_BossSeeker_BlinkBarrage);"
+      ],
+      "cooldown": 9.0909,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.3,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_DarkCave_BossSeeker_BlinkBarrage",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_Blink",
+      "config_index": 0,
+      "selection": {
+        "mode": "reactive",
+        "note": "cast by Mon_DarkCave_BossSeeker AI code outside the ability pool"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in PoolAIUpdate()",
+        "if (_lastBlinkNormalizedHealth - hp_ratio >= 0.1)",
+        "    else",
+        "        switch (currentPoolIndex)",
+        "            case 0:",
+        "            if (ready<At_Mon_DarkCave_BossSeeker_Blink>())",
+        "                    CAST(At_Mon_DarkCave_BossSeeker_Blink);"
+      ],
+      "cooldown": 4.5455,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": 0,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0,
+      "channel_duration": 0.3,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 0,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_DarkCave_BossSeeker_Blink",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": true,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_Substitution",
+      "config_index": 0,
+      "selection": {
+        "mode": "reactive",
+        "note": "cast by Mon_DarkCave_BossSeeker AI code outside the ability pool"
+      },
+      "base_class": "AbilityTrigger",
+      "cast_logic": [
+        "// in PoolAIUpdate()",
+        "if (_lastBlinkNormalizedHealth - hp_ratio >= 0.1)",
+        "    else",
+        "        switch (currentPoolIndex)",
+        "            case 1:",
+        "            if (ready<At_Mon_DarkCave_BossSeeker_Substitution>())",
+        "                    CAST(At_Mon_DarkCave_BossSeeker_Substitution);"
+      ],
+      "cooldown": 18.1818,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.01,
+      "channel_duration": 0.01,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 0,
+        "range": 0,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 40,
+        "is_clamping": false
+      },
+      "instance": "Se_Mon_DarkCave_BossSeeker_Substitution",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": false,
+        "overrideRotationDuration": 0.75,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 0,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    },
+    {
+      "name": "At_Mon_DarkCave_BossSeeker_Atk",
+      "config_index": 0,
+      "selection": {
+        "mode": "basic_attack",
+        "note": "assumed basic/alt attack (every off-pool attack-family trigger across all bosses matches this pattern)"
+      },
+      "base_class": "AttackTrigger",
+      "cast_logic": [
+        "// no cast site found in decompiled code"
+      ],
+      "cooldown": 5,
+      "minimum_delay": 0,
+      "max_charges": 1,
+      "start_charges": -1,
+      "added_charges": 1,
+      "mana_cost": 0,
+      "post_delay": 0.2727,
+      "channel_duration": 0.9091,
+      "can_receive_cooldown_reduction": true,
+      "lock_cooldown_until_killed": false,
+      "lock_cast_until_killed": false,
+      "cast_method": {
+        "type": 3,
+        "range": 40,
+        "width": 0,
+        "length": 0,
+        "angle": 0,
+        "radius": 1,
+        "is_clamping": false
+      },
+      "instance": "Ai_Mon_DarkCave_BossSeeker_Atk",
+      "extra": {
+        "setFillAmount": true,
+        "destroyExistingEffect": false,
+        "selfValidator": {
+          "isMovementAbility": 0,
+          "allowWhileDashing": 0,
+          "allowWhileDodging": 1,
+          "allowWhileDisabled": 0
+        },
+        "ignoreBlock": false,
+        "ignoreAbilityLock": false,
+        "faceForward": true,
+        "overrideRotation": true,
+        "overrideRotationDuration": 4,
+        "postponeBasicCommand": false,
+        "moveTowardsCastDirection": false,
+        "canConsumeCastBonus": true,
+        "alwaysCastImmediately": false,
+        "castByMoveDirectionByDefault": false,
+        "castByMoveDirectionGamepad": false,
+        "ignoreAimDirectionGamepad": false,
+        "unstoppableWhileCasting": false,
+        "targetValidator": {
+          "targets": 6
+        },
+        "predictionSettings": {
+          "type": 1,
+          "useCustomParameters": 0,
+          "delay": 0.0,
+          "initSpeed": 0.0,
+          "targetSpeed": 0.0,
+          "acceleration": 0.0,
+          "frontDistance": 0.0
+        }
+      }
+    }
+  ]
+}
