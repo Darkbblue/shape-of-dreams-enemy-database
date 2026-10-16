@@ -894,7 +894,21 @@ public class BossPracticeOverlayMod : ModBehaviour
 				Scene scene = SceneManager.GetSceneByName(name);
 				if (scene.isLoaded)
 				{
-					CollectBossesFromScene(scene, bosses);
+					List<string> diag = new List<string>();
+					CollectBossesFromScene(scene, bosses, diag);
+					if (bosses.Count == 0)
+					{
+						Debug.Log($"{Tag} scene {name}: NO boss found. Diagnostics:");
+						foreach (string line in diag)
+						{
+							Debug.Log($"{Tag}   {line}");
+						}
+					}
+					else
+					{
+						string text2 = ((diag.Count > 0) ? diag[diag.Count - 1] : "");
+						Debug.Log($"{Tag} scene {name}: bosses=[{string.Join(", ", bosses)}] ({text2})");
+					}
 				}
 			}
 			catch (Exception arg3)
@@ -948,40 +962,108 @@ public class BossPracticeOverlayMod : ModBehaviour
 		_scanRoutine = null;
 	}
 
-	private void CollectBossesFromScene(Scene scene, List<string> bosses)
+	private void CollectBossesFromScene(Scene scene, List<string> bosses, List<string> diag)
 	{
 		GameObject[] rootObjects = scene.GetRootGameObjects();
+		int roomMonstersTotal = 0;
+		int sectionsTotal = 0;
+		int presetTotal = 0;
+		int presetBossTotal = 0;
+		int poolRules = 0;
+		int presetSampleShown = 0;
 		foreach (GameObject root in rootObjects)
 		{
-			RoomMonsters[] array = root.GetComponentsInChildren<RoomMonsters>(true);
-			foreach (RoomMonsters roomMonsters in array)
+			// Section_Monsters live on RoomSection objects that are SIBLINGS of RoomMonsters
+			// (not children), so collect them at scene level, independent of RoomMonsters.
+			Section_Monsters[] sections = root.GetComponentsInChildren<Section_Monsters>(true);
+			sectionsTotal += sections.Length;
+			RoomMonsters[] roomMonstersArray = root.GetComponentsInChildren<RoomMonsters>(true);
+			roomMonstersTotal += roomMonstersArray.Length;
+			foreach (RoomMonsters roomMonsters in roomMonstersArray)
 			{
 				foreach (MonsterSpawnRule monsterSpawnRule in CollectLiveRules(roomMonsters))
 				{
-					if (monsterSpawnRule?.pool?.entries == null)
+					string text = ((monsterSpawnRule != null) ? (monsterSpawnRule.name ?? "unnamed-rule") : "null");
+					int count = monsterSpawnRule?.pool?.entries?.Count ?? -1;
+					List<string> list = new List<string>();
+					if (monsterSpawnRule?.pool?.entries != null)
 					{
-						continue;
-					}
-					foreach (MonsterPool.SpawnRuleEntry entry in monsterSpawnRule.pool.entries)
-					{
-						try
+						foreach (MonsterPool.SpawnRuleEntry entry in monsterSpawnRule.pool.entries)
 						{
-							AddBossIfKnown(entry.monster.typeName, bosses);
+							try
+							{
+								string typeName = entry.monster.typeName;
+								if (typeName != null)
+								{
+									list.Add(typeName);
+								}
+							}
+							catch (Exception)
+							{
+							}
 						}
-						catch (Exception)
+					}
+					diag.Add($"RoomMonsters@{roomMonsters.name} rule={text} isBossSpawn={(monsterSpawnRule != null && monsterSpawnRule.isBossSpawn)} entries={count} types=[{string.Join(", ", list)}]");
+					if (count > 0)
+					{
+						poolRules++;
+					}
+					if (monsterSpawnRule?.pool?.entries != null)
+					{
+						foreach (MonsterPool.SpawnRuleEntry entry2 in monsterSpawnRule.pool.entries)
 						{
+							try
+							{
+								AddBossIfKnown(entry2.monster.typeName, bosses);
+							}
+							catch (Exception)
+							{
+							}
 						}
 					}
 				}
 			}
-			Monster[] array2 = root.GetComponentsInChildren<Monster>(true);
-			foreach (Monster monster in array2)
+			foreach (Section_Monsters section_Monsters in sections)
+			{
+				MonsterSpawnRule monsterSpawnRule2 = section_Monsters.ruleOverride;
+				if (monsterSpawnRule2 == null)
+				{
+					continue;
+				}
+				diag.Add($"Section_Monsters@{section_Monsters.name} rule={monsterSpawnRule2.name ?? "unnamed"}");
+				if (monsterSpawnRule2.pool?.entries == null)
+				{
+					continue;
+				}
+				poolRules++;
+				foreach (MonsterPool.SpawnRuleEntry entry3 in monsterSpawnRule2.pool.entries)
+				{
+					try
+					{
+						AddBossIfKnown(entry3.monster.typeName, bosses);
+					}
+					catch (Exception)
+					{
+					}
+				}
+			}
+			Monster[] array = root.GetComponentsInChildren<Monster>(true);
+			presetTotal += array.Length;
+			foreach (Monster monster in array)
 			{
 				try
 				{
 					if (monster.type == Monster.MonsterType.Boss)
 					{
-						AddBossIfKnown(monster.GetOriginalName(), bosses);
+						presetBossTotal++;
+						string originalName = monster.GetOriginalName();
+						diag.Add($"preset boss instance: {originalName}");
+						AddBossIfKnown(originalName, bosses);
+					}
+					else if (presetSampleShown < 8)
+					{
+						presetSampleShown++;
+						diag.Add($"preset monster (non-boss): {monster.GetOriginalName()} type={monster.type}");
 					}
 				}
 				catch (Exception)
@@ -989,6 +1071,7 @@ public class BossPracticeOverlayMod : ModBehaviour
 				}
 			}
 		}
+		diag.Add($"totals: roots={rootObjects.Length} RoomMonsters={roomMonstersTotal} Sections={sectionsTotal} poolRules={poolRules} presetMonsters={presetTotal} presetBosses={presetBossTotal}");
 	}
 
 	private void AddBossIfKnown(string typeName, List<string> bosses)
