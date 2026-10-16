@@ -1,5 +1,3 @@
-**WARNING: still under development. I won't have the time for testing until tonight.**
-
 # Shape of Dreams Monster Database and Practice Overlay Mod
 
 This is a practice helper for the video game [Shape of Dreams](https://store.steampowered.com/app/2444750/Shape_of_Dreams/).
@@ -14,6 +12,7 @@ To help practice, this repo provides two functionalities:
 The database can be directly read from within this repo. No installation is required.  
 
 To install the mod, copy the entire `modding/BossPracticeOverlay/` folder into your game's mod folder (`Shape of Dreams/Mods`).
+Then, from the in-game settings, turn on developer mode. You interact with this mod via the developer console.
 
 ## Usage
 To use the database, navigate to `datamining/processed_data/out`.
@@ -21,11 +20,11 @@ Here you can find many folders, each in correspondence to one boss.
 Within each folder, there're multiple json files, each in correspondence to one difficulty+variant combination. (In hard mode, some bosses will randomly turn into its hard variant).
 Although they are json files, they are in fact designed to be human-readable.
 
-To use the mod's overlay function, just install the mod and press F1.
+To use the mod's overlay function, just install the mod.
 When you enter a boss arena, the overlay will start to work.
 
-To use the mod's teleport function, press \` to open the console.
-First use `JumpToBoss` command, which will output the names of all the bosses available.
+To use the mod's teleport function, press F1 and \` to open the console.
+First use `JumpToBossList` command, which will output the names of all the bosses available.
 Then, pick one boss name and use `JumpToBoss <BossName>` command.
 This will also automatically turn on a practice-friendly HP lock: you won't die (mostly), but still see the on-hit effect and the health bar moving, so that you could know if you're hit.
 You can teleport to new bosses without quiting the current run. You can also teleport to a new boss without defeating the current boss.
@@ -41,12 +40,17 @@ pip3 install UnityPy
 dotnet tool install --global ilspycmd
 ```
 
-To maintain the database, run:
+To update the database in case the game gets new bosses in the future, run:
 ```bash
 python3 datamining/run_all.py "<GameRootFolder>"
 ```
 
-To compile the mod locally, you need to run:
+To update the boss list, which the mod relies on, in case the game gets new bosses in the future, use `BuildBossSceneMap` command in the console **at the main menu**.
+You will then find a file at `Mods/BossPracticeOverlay/about/boss_scenes.json`.
+Copy the file into this repo's corresponding location.
+
+Ideally, updating the boss-scene file is enough to keep the mod updated for new patches.
+But if you really need to compile the mod locally, you need to run:
 ```bash
 cd modding\BossPracticeOverlay
 dotnet build -c Release -p:GameManaged="path/to/steamapps/common/Shape of Dreams/Shape of Dreams_Data/Managed"
