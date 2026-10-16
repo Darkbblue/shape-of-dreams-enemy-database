@@ -1102,22 +1102,41 @@ public class BossPracticeOverlayMod : ModBehaviour
 
 	private void PrintBossList()
 	{
-		Debug.Log($"{Tag} Boss list ({_bossRoster.Count}) - usage: JumpToBoss <name> or <name>(hard):");
+		LoadExactBossSceneMap();
+		bool exact = _exactBossScenes != null && _exactBossScenes.Count > 0;
+		Debug.Log($"{Tag} Boss list - runtime roster: {_bossRoster.Count} bosses. Usage: JumpToBoss <name> / <name>(hard). Scene source: {(exact ? "boss_scenes.json" : "biome guess")}");
+		List<string> unmatched = new List<string>();
+		int mapped = 0;
 		foreach (string boss in _bossRoster)
 		{
+			string hardMark = ((_bossPrefabs[boss].abilityPools.Count > 1) ? " (hard available)" : "");
 			List<string> value = CandidateScenes(boss);
-			string text = ((value.Count > 0) ? string.Join("/", value.GetRange(0, Math.Min(2, value.Count))) + (value.Count > 2 ? "/..." : "") : "no-scene (direct spawn)");
-			if (_bossPrefabs[boss].abilityPools.Count > 1)
+			string text;
+			string text2;
+			if (value.Count > 0)
 			{
-				Debug.Log($"{Tag}  {boss}          scenes={text}");
-				Debug.Log($"{Tag}  {boss}(hard)    scenes={text}");
+				mapped++;
+				bool flag = exact && _exactBossScenes.ContainsKey(boss);
+				text2 = (flag ? "exact" : "biome-guess");
+				text = string.Join("/", value.GetRange(0, Math.Min(2, value.Count))) + (value.Count > 2 ? "/..." : "");
 			}
 			else
 			{
-				Debug.Log($"{Tag}  {boss}          scenes={text}");
+				text2 = "NONE";
+				text = "no scene found -> will direct-spawn in current room";
+			}
+			Debug.Log($"{Tag}  {boss}{hardMark} [{text2}] scenes={text}");
+			if (value.Count == 0)
+			{
+				unmatched.Add(boss);
 			}
 		}
-		HudMessage($"{Tag} {_bossRoster.Count} bosses listed in the log; full details in the log viewer.");
+		Debug.Log($"{Tag} mapped {mapped}/{_bossRoster.Count}.");
+		if (unmatched.Count > 0)
+		{
+			Debug.Log($"{Tag} bosses WITHOUT scene: {string.Join(", ", unmatched)}");
+		}
+		HudMessage($"{Tag} {_bossRoster.Count} bosses ({mapped} with scene) listed in the log; details in the log viewer.");
 	}
 
 	private string ResolveBossName(string input)
