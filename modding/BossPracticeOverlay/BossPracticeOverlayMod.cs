@@ -860,12 +860,12 @@ public class BossPracticeOverlayMod : ModBehaviour
 			{
 				continue;
 			}
-			if ((lower.Contains("/rooms/") && lower.Contains("boss")) || lower.Contains("room_special"))
+			if (lower.Contains("room_"))
 			{
 				targets.Add(name);
 			}
 		}
-		HudMessage($"{Tag} scanning {targets.Count} boss scenes (stay in the menu)...");
+		HudMessage($"{Tag} scanning {targets.Count} room scenes (stay in the menu, NRE spam is silenced)...");
 		Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
 		Dictionary<string, List<string>> sceneBosses = new Dictionary<string, List<string>>();
 		int done = 0;
@@ -874,6 +874,9 @@ public class BossPracticeOverlayMod : ModBehaviour
 			_scanCurrent = name;
 			List<string> bosses = new List<string>();
 			AsyncOperation op = null;
+			// Scene components throw NREs in Awake when woken in the menu (no game session);
+			// silence the logger while the scene is loaded so the console is not spammed.
+			Debug.unityLogger.logEnabled = false;
 			try
 			{
 				op = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
@@ -891,42 +894,19 @@ public class BossPracticeOverlayMod : ModBehaviour
 				Scene scene = SceneManager.GetSceneByName(name);
 				if (scene.isLoaded)
 				{
-					GameObject[] rootObjects = scene.GetRootGameObjects();
-					foreach (GameObject root in rootObjects)
-					{
-						RoomMonsters roomMonsters = root.GetComponentInChildren<RoomMonsters>(true);
-						if (roomMonsters == null)
-						{
-							continue;
-						}
-						foreach (MonsterSpawnRule monsterSpawnRule in CollectLiveRules(roomMonsters))
-						{
-							if (monsterSpawnRule?.pool?.entries == null)
-							{
-								continue;
-							}
-							foreach (MonsterPool.SpawnRuleEntry entry in monsterSpawnRule.pool.entries)
-							{
-								try
-								{
-									string typeName = entry.monster.typeName;
-									if (typeName != null && _bossPrefabs.ContainsKey(typeName) && !bosses.Contains(typeName))
-									{
-										bosses.Add(typeName);
-									}
-								}
-								catch (Exception)
-								{
-								}
-							}
-						}
-					}
+					CollectBossesFromScene(scene, bosses);
 				}
 			}
 			catch (Exception arg3)
 			{
 				Debug.LogError($"{Tag} failed to read {name}: {arg3}");
 			}
+			AsyncOperation unload = SceneManager.UnloadSceneAsync(name);
+			while (unload != null && !unload.isDone)
+			{
+				yield return null;
+			}
+			Debug.unityLogger.logEnabled = true;
 			if (bosses.Count > 0)
 			{
 				sceneBosses[name] = bosses;
@@ -940,16 +920,12 @@ public class BossPracticeOverlayMod : ModBehaviour
 					list.Add(name);
 				}
 			}
-			AsyncOperation unload = SceneManager.UnloadSceneAsync(name);
-			while (unload != null && !unload.isDone)
-			{
-				yield return null;
-			}
 			done++;
 			HudMessage($"{Tag} scanned {done}/{targets.Count}: {name} -> {bosses.Count} boss(es)");
 			yield return null;
 		}
 		_scanCurrent = null;
+		Debug.unityLogger.logEnabled = true;
 		try
 		{
 			BossSceneMapFile bossSceneMapFile = new BossSceneMapFile
@@ -962,6 +938,7 @@ public class BossPracticeOverlayMod : ModBehaviour
 			File.WriteAllText(path, DewPersistence.ToJson(bossSceneMapFile));
 			_exactBossSceneMapLoaded = false;
 			_exactBossScenes = null;
+			Debug.Log($"{Tag} boss scene map written: {map.Count}/{_bossRoster.Count} bosses over {sceneBosses.Count} scenes");
 			HudMessage($"{Tag} boss scene map written: {map.Count}/{_bossRoster.Count} bosses over {sceneBosses.Count} scenes. Ready.");
 		}
 		catch (Exception arg4)
@@ -969,6 +946,57 @@ public class BossPracticeOverlayMod : ModBehaviour
 			HudMessage($"{Tag} writing boss_scenes.json failed: {arg4}");
 		}
 		_scanRoutine = null;
+	}
+
+	private void CollectBossesFromScene(Scene scene, List<string> bosses)
+	{
+		GameObject[] rootObjects = scene.GetRootGameObjects();
+		foreach (GameObject root in rootObjects)
+		{
+			RoomMonsters[] array = root.GetComponentsInChildren<RoomMonsters>(true);
+			foreach (RoomMonsters roomMonsters in array)
+			{
+				foreach (MonsterSpawnRule monsterSpawnRule in CollectLiveRules(roomMonsters))
+				{
+					if (monsterSpawnRule?.pool?.entries == null)
+					{
+						continue;
+					}
+					foreach (MonsterPool.SpawnRuleEntry entry in monsterSpawnRule.pool.entries)
+					{
+						try
+						{
+							AddBossIfKnown(entry.monster.typeName, bosses);
+						}
+						catch (Exception)
+						{
+						}
+					}
+				}
+			}
+			Monster[] array2 = root.GetComponentsInChildren<Monster>(true);
+			foreach (Monster monster in array2)
+			{
+				try
+				{
+					if (monster.type == Monster.MonsterType.Boss)
+					{
+						AddBossIfKnown(monster.GetOriginalName(), bosses);
+					}
+				}
+				catch (Exception)
+				{
+				}
+			}
+		}
+	}
+
+	private void AddBossIfKnown(string typeName, List<string> bosses)
+	{
+		if (typeName != null && _bossPrefabs.ContainsKey(typeName) && !bosses.Contains(typeName))
+		{
+			bosses.Add(typeName);
+		}
 	}
 
 	private List<MonsterSpawnRule> CollectLiveRules(RoomMonsters roomMonsters)

@@ -5,6 +5,15 @@ using System;
 
 namespace UnityEngine
 {
+	public interface ILogger
+	{
+		bool logEnabled
+		{
+			get;
+			set;
+		}
+	}
+
 	public class Object
 	{
 		public string name
@@ -173,6 +182,8 @@ namespace UnityEngine
 
 	public static class Debug
 	{
+		public static UnityEngine.ILogger unityLogger => null;
+
 		public static void Log(object message)
 		{
 		}
