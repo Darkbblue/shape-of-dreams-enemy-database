@@ -35,6 +35,11 @@
       <HintPath>$(GameManaged)\Dew.Contents.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- DewPersistence.FromJson<T>() has a JsonSerializerSettings default parameter. -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GameManaged)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <ProjectReference Include="stubs\UnityEngine.CoreModule\UnityEngine.CoreModule.csproj" />
     <ProjectReference Include="stubs\Mirror\Mirror.csproj" />
   </ItemGroup>

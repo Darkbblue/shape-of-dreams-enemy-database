@@ -59,6 +59,32 @@ namespace UnityEngine
 
 	public class MonoBehaviour : Component
 	{
+		public Coroutine StartCoroutine(System.Collections.IEnumerator routine)
+		{
+			return null;
+		}
+	}
+
+	public class Coroutine
+	{
+	}
+
+	public class GameObject : Object
+	{
+		public T GetComponent<T>()
+		{
+			return default(T);
+		}
+
+		public T GetComponentInChildren<T>(bool includeInactive)
+		{
+			return default(T);
+		}
+
+		public T[] GetComponentsInChildren<T>(bool includeInactive)
+		{
+			return new T[0];
+		}
 	}
 
 	public class ScriptableObject : Object
@@ -176,6 +202,60 @@ namespace UnityEngine
 		public static float Min(float a, float b)
 		{
 			return (a < b) ? a : b;
+		}
+	}
+
+	public class AsyncOperation
+	{
+		public bool isDone => true;
+	}
+}
+
+namespace UnityEngine.SceneManagement
+{
+	public enum LoadSceneMode
+	{
+		Single,
+		Additive
+	}
+
+	public struct Scene
+	{
+		public bool isLoaded => true;
+
+		public string name => "";
+
+		public GameObject[] GetRootGameObjects()
+		{
+			return new GameObject[0];
+		}
+	}
+
+	public static class SceneManager
+	{
+		public static int sceneCountInBuildSettings => 0;
+
+		public static UnityEngine.AsyncOperation LoadSceneAsync(string sceneName, LoadSceneMode mode)
+		{
+			return null;
+		}
+
+		public static UnityEngine.AsyncOperation UnloadSceneAsync(string sceneName)
+		{
+			return null;
+		}
+
+		public static Scene GetSceneByName(string sceneName)
+		{
+			return default(Scene);
+		}
+	}
+
+	public static class SceneUtility
+	{
+		public static string GetScenePathByBuildIndex(int buildIndex)
+		{
+			return "";
 		}
 	}
 }

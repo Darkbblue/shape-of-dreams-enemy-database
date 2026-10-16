@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Boss Practice Overlay — shows the tracked boss + last cast as a minimal top-left HUD,
 // and logs sparse diagnostics to the F1 viewer.
@@ -264,6 +266,22 @@ public class BossPracticeOverlayMod : ModBehaviour
 
 	private static List<string> _bossRoster;
 
+	private static Dictionary<string, List<string>> _exactBossScenes;
+
+	private static bool _exactBossSceneMapLoaded;
+
+	[Serializable]
+	private class BossSceneMapFile
+	{
+#pragma warning disable 649
+		public int schema;
+
+		public Dictionary<string, List<string>> boss_scenes;
+
+		public Dictionary<string, List<string>> scene_bosses;
+#pragma warning restore 649
+	}
+
 	private JumpState _jumpState;
 
 	private string _jumpBossName;
@@ -277,6 +295,10 @@ public class BossPracticeOverlayMod : ModBehaviour
 	private bool _poolsAttempted;
 
 	private List<PoolSnapshot> _filteredPools;
+
+	private Coroutine _scanRoutine;
+
+	private string _scanCurrent;
 
 	private StatBonus _lockBonus;
 
@@ -702,36 +724,73 @@ public class BossPracticeOverlayMod : ModBehaviour
 			return list;
 		}
 
-		// Scene names encode only the biome (Room_<Biome>_Boss_0); boss identity lives inside
-		// the scene's spawn pools, so candidates are biome-level and refined after loading.
-		private static List<string> CandidateScenes(string bossName)
+	// Scene names encode only the biome (Room_<Biome>_Boss_0); boss identity lives inside
+	// the scene's spawn pools, so candidates are biome-level and refined after loading —
+	// unless an exact offline-extracted map (about/boss_scenes.json, built by
+	// datamining/extract_room_boss_map.py) is bundled with the mod, which takes priority.
+	private List<string> CandidateScenes(string bossName)
+	{
+		List<string> list = new List<string>();
+		LoadExactBossSceneMap();
+		if (_exactBossScenes != null && _exactBossScenes.TryGetValue(bossName, out List<string> exact) && exact.Count > 0)
 		{
-			List<string> list = new List<string>();
-			if (_bossScenes == null)
-			{
-				return list;
-			}
-			string[] array = bossName.Split('_');
-			string text = ((array.Length > 1) ? array[1] : bossName);
-			string text2 = "";
-			for (int i = 0; i < array.Length; i++)
-			{
-				if (array[i] == "Boss" && i + 1 < array.Length)
-				{
-					text2 = array[i + 1];
-				}
-			}
-			string item = "Room_" + text + "_Boss";
-			foreach (string item2 in _bossScenes)
-			{
-				if (item2.StartsWith(item, StringComparison.OrdinalIgnoreCase) || (text2.Length > 0 && item2.IndexOf(text2, StringComparison.OrdinalIgnoreCase) >= 0))
-				{
-					list.Add(item2);
-				}
-			}
-			list.Sort(StringComparer.OrdinalIgnoreCase);
+			return new List<string>(exact);
+		}
+		if (_bossScenes == null)
+		{
 			return list;
 		}
+		string[] array = bossName.Split('_');
+		string text = ((array.Length > 1) ? array[1] : bossName);
+		string text2 = "";
+		for (int i = 0; i < array.Length; i++)
+		{
+			if (array[i] == "Boss" && i + 1 < array.Length)
+			{
+				text2 = array[i + 1];
+			}
+		}
+		string item = "Room_" + text + "_Boss";
+		foreach (string item2 in _bossScenes)
+		{
+			if (item2.StartsWith(item, StringComparison.OrdinalIgnoreCase) || (text2.Length > 0 && item2.IndexOf(text2, StringComparison.OrdinalIgnoreCase) >= 0))
+			{
+				list.Add(item2);
+			}
+		}
+		list.Sort(StringComparer.OrdinalIgnoreCase);
+		return list;
+	}
+
+	private void LoadExactBossSceneMap()
+	{
+		if (_exactBossSceneMapLoaded)
+		{
+			return;
+		}
+		_exactBossSceneMapLoaded = true;
+		try
+		{
+			string text = Path.Combine(mod.path, "about", "boss_scenes.json");
+			if (!File.Exists(text))
+			{
+				Debug.Log($"{Tag} no boss_scenes.json bundled; boss scene lookup falls back to the biome guess");
+				return;
+			}
+			BossSceneMapFile bossSceneMapFile = DewPersistence.FromJson<BossSceneMapFile>(File.ReadAllText(text));
+			if (bossSceneMapFile?.boss_scenes == null || bossSceneMapFile.boss_scenes.Count == 0)
+			{
+				Debug.Log($"{Tag} boss_scenes.json has no mappings; boss scene lookup falls back to the biome guess");
+				return;
+			}
+			_exactBossScenes = bossSceneMapFile.boss_scenes;
+			Debug.Log($"{Tag} loaded boss_scenes.json: {_exactBossScenes.Count} bosses with exact scene mapping");
+		}
+		catch (Exception arg)
+		{
+			Debug.LogError($"{Tag} failed to load boss_scenes.json: {arg}");
+		}
+	}
 
 	private void ApplyLock()
 	{
@@ -758,6 +817,173 @@ public class BossPracticeOverlayMod : ModBehaviour
 		hero.DoHeal(new HealData(2000f), hero);
 		Debug.Log($"{Tag} practice lock ON: maxHP={hero.maxHealth:0} armor={status.armor:0} regen=+150/s. Damage and healing stay visible; cleared automatically when you leave this run.");
 		HudMessage($"{Tag} practice lock ON (maxHP={hero.maxHealth:0}, armor+70, regen+150/s)");
+	}
+
+	// ==================== BuildBossSceneMap (offline map generator) ====================
+	// Boss identity lives inside each room scene's spawn pools; scene names are generic
+	// (Room_DarkCave_Boss_0) and offline UnityPy parsing of built scene typetrees is
+	// unreliable, so this scans the scenes in-engine (additive load -> read pools ->
+	// unload) and writes about/boss_scenes.json for CandidateScenes to consume.
+	// Run in the MAIN MENU (no networking session allowed).
+
+
+	[ConsoleCommand("Scan all boss room scenes and write about/boss_scenes.json. Run in MAIN MENU, takes a few minutes.")]
+	private void BuildBossSceneMap()
+	{
+		if (_scanRoutine != null)
+		{
+			HudMessage($"{Tag} scene scan already running ({_scanCurrent ?? "..."})");
+			return;
+		}
+		if (!MakeSureNotInGame())
+		{
+			return;
+		}
+		EnsureBossIndex();
+		_scanRoutine = StartCoroutine(ScanRoutine());
+	}
+
+	private System.Collections.IEnumerator ScanRoutine()
+	{
+		yield return null;
+		int count = SceneManager.sceneCountInBuildSettings;
+		List<string> targets = new List<string>();
+		for (int i = 0; i < count; i++)
+		{
+			string path = SceneUtility.GetScenePathByBuildIndex(i);
+			string lower = path.ToLowerInvariant();
+			string name = Path.GetFileNameWithoutExtension(path);
+			if (string.IsNullOrEmpty(name) || targets.Contains(name))
+			{
+				continue;
+			}
+			if ((lower.Contains("/rooms/") && lower.Contains("boss")) || lower.Contains("room_special"))
+			{
+				targets.Add(name);
+			}
+		}
+		HudMessage($"{Tag} scanning {targets.Count} boss scenes (stay in the menu)...");
+		Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+		Dictionary<string, List<string>> sceneBosses = new Dictionary<string, List<string>>();
+		int done = 0;
+		foreach (string name in targets)
+		{
+			_scanCurrent = name;
+			List<string> bosses = new List<string>();
+			AsyncOperation op = null;
+			try
+			{
+				op = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+			}
+			catch (Exception arg2)
+			{
+				Debug.LogError($"{Tag} failed to load {name}: {arg2}");
+			}
+			while (op != null && !op.isDone)
+			{
+				yield return null;
+			}
+			try
+			{
+				Scene scene = SceneManager.GetSceneByName(name);
+				if (scene.isLoaded)
+				{
+					GameObject[] rootObjects = scene.GetRootGameObjects();
+					foreach (GameObject root in rootObjects)
+					{
+						RoomMonsters roomMonsters = root.GetComponentInChildren<RoomMonsters>(true);
+						if (roomMonsters == null)
+						{
+							continue;
+						}
+						foreach (MonsterSpawnRule monsterSpawnRule in CollectLiveRules(roomMonsters))
+						{
+							if (monsterSpawnRule?.pool?.entries == null)
+							{
+								continue;
+							}
+							foreach (MonsterPool.SpawnRuleEntry entry in monsterSpawnRule.pool.entries)
+							{
+								try
+								{
+									string typeName = entry.monster.typeName;
+									if (typeName != null && _bossPrefabs.ContainsKey(typeName) && !bosses.Contains(typeName))
+									{
+										bosses.Add(typeName);
+									}
+								}
+								catch (Exception)
+								{
+								}
+							}
+						}
+					}
+				}
+			}
+			catch (Exception arg3)
+			{
+				Debug.LogError($"{Tag} failed to read {name}: {arg3}");
+			}
+			if (bosses.Count > 0)
+			{
+				sceneBosses[name] = bosses;
+				foreach (string boss in bosses)
+				{
+					if (!map.TryGetValue(boss, out List<string> list))
+					{
+						list = new List<string>();
+						map[boss] = list;
+					}
+					list.Add(name);
+				}
+			}
+			AsyncOperation unload = SceneManager.UnloadSceneAsync(name);
+			while (unload != null && !unload.isDone)
+			{
+				yield return null;
+			}
+			done++;
+			HudMessage($"{Tag} scanned {done}/{targets.Count}: {name} -> {bosses.Count} boss(es)");
+			yield return null;
+		}
+		_scanCurrent = null;
+		try
+		{
+			BossSceneMapFile bossSceneMapFile = new BossSceneMapFile
+			{
+				schema = 1,
+				boss_scenes = map,
+				scene_bosses = sceneBosses
+			};
+			string path = Path.Combine(mod.path, "about", "boss_scenes.json");
+			File.WriteAllText(path, DewPersistence.ToJson(bossSceneMapFile));
+			_exactBossSceneMapLoaded = false;
+			_exactBossScenes = null;
+			HudMessage($"{Tag} boss scene map written: {map.Count}/{_bossRoster.Count} bosses over {sceneBosses.Count} scenes. Ready.");
+		}
+		catch (Exception arg4)
+		{
+			HudMessage($"{Tag} writing boss_scenes.json failed: {arg4}");
+		}
+		_scanRoutine = null;
+	}
+
+	private List<MonsterSpawnRule> CollectLiveRules(RoomMonsters roomMonsters)
+	{
+		List<MonsterSpawnRule> list = new List<MonsterSpawnRule>();
+		if (roomMonsters != null && roomMonsters.defaultRule != null)
+		{
+			list.Add(roomMonsters.defaultRule);
+		}
+		Section_Monsters[] componentsInChildren = roomMonsters.GetComponentsInChildren<Section_Monsters>(true);
+		foreach (Section_Monsters section_Monsters in componentsInChildren)
+		{
+			if (section_Monsters != null && section_Monsters.ruleOverride != null)
+			{
+				list.Add(section_Monsters.ruleOverride);
+			}
+		}
+		return list;
 	}
 
 	private void PrintBossList()
@@ -921,12 +1147,13 @@ public class BossPracticeOverlayMod : ModBehaviour
 		}
 	}
 
-	private static void EnsureBossIndex()
+	private void EnsureBossIndex()
 	{
 		if (_bossRoster != null)
 		{
 			return;
 		}
+		LoadExactBossSceneMap();
 		_bossRoster = new List<string>();
 		_bossPrefabs = new Dictionary<string, Monster>(StringComparer.OrdinalIgnoreCase);
 		foreach (Monster allByType in DewResources.FindAllByType<Monster>())

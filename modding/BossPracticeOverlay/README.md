@@ -24,16 +24,24 @@
 | `JumpToBoss Mon_Ink_BossWhiteNight` | 传送到其 boss 场景（普通形态）+ 开锁血 |
 | `JumpToBoss Mon_Ink_BossWhiteNight(hard)` | 同上，困难变体 |
 | `JumpToBossDebug` | 诊断：打印 zone 清单、房间场景名全集、每个 boss 的场景匹配结果 |
+| `BuildBossSceneMap` | **一次性生成精确映射**：**主菜单**执行（局内会拒绝），additive 逐个加载 boss 场景读取出怪池后卸载，几分钟内写出 `about/boss_scenes.json` |
 
 注意：游戏内控制台不支持省略有默认值的参数，`JumpToBoss` 必须带参数；查询请用 `JumpToBossList`。
 
-行为细节：
+**场景映射的三级来源**（boss 身份不在场景名里——`Room_DarkCave_Boss_0` 是通用命名）：
 
-- **boss↔场景：两级运行时发现**。场景名只编码 biome（如 `Room_DarkCave_Boss_0`），boss 身份
-  在场景内出怪规则池里：先按 biome 选候选场景（`Room_<biome>_Boss*` 或含 boss 名尾段）传送；
-  场景就位后读取真实出怪规则（`RoomMonsters.defaultRule` + section 覆盖），**把池过滤成只剩
-  目标 boss**（原始列表快照、跳转结束即还原），让场景自己刷出正确的 boss——Ink 双 boss 也由此
-  精确区分。池里无目标 boss 时提示可强刷。
+1. **精确映射**：`about/boss_scenes.json`（由 `BuildBossSceneMap` 生成，或离线脚本
+   `datamining/extract_room_boss_map.py`）——首跳自动加载，覆盖全部 14 boss 含 Special 系。
+2. **biome 猜测**（无映射文件时的兜底）：`Mon_DarkCave_BossX` → 场景名含 `Room_DarkCave_Boss`。
+   常规 boss 有效，**Special 系隐藏 boss 无效**（命名不含 biome）。
+3. 传送后场景就位时读取真实出怪规则池（`RoomMonsters.defaultRule` + section 覆盖），
+   **过滤成只剩目标 boss**（原始列表快照、跳转结束即还原），让场景自己刷出正确的
+   boss——Ink 双 boss 也由此精确区分。池里无目标 boss 时提示可强刷。
+
+首次使用请先在主菜单跑一次 `BuildBossSceneMap`。
+
+其他行为细节：
+
 - **变体强制**：加载前把当前区 index 写入/移出 `hardVariantBossZoneIndices`，boss 出生后移除并回读确认。
 - **锁血（"看得见的锁血"）**：血量上限补至 ≥2000 + 护甲 +70 + 回血 +150/s，伤害照常结算
   （受击特效、掉血、回复全部可见）。绑定英雄实体，**退出一局自动消失**，无需手动关闭。

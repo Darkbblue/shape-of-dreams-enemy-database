@@ -24,7 +24,7 @@ dotnet build tools/build-check/BossPracticeOverlay.check.csproj -v q -nologo
 echo "== [3/3] real csproj reference pipeline via fake Managed =="
 mkdir -p "$FAKE"
 cp tools/build-check/bin-stubs/*.dll "$FAKE"/
-cp "$GAME_MANAGED/Dew.Core.dll" "$GAME_MANAGED/Dew.Contents.dll" "$FAKE"/
+cp "$GAME_MANAGED/Dew.Core.dll" "$GAME_MANAGED/Dew.Contents.dll" "$GAME_MANAGED/Newtonsoft.Json.dll" "$FAKE"/
 dotnet build BossPracticeOverlay/BossPracticeOverlay.csproj -c Release -v q -nologo \
   -p:GameManaged="$PWD/$FAKE"
 
