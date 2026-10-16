@@ -1,6 +1,8 @@
 **WARNING: still under development. I won't have the time for testing until tonight.**
 
-This is a practice helper for the video game Shape of Dreams.
+# Shape of Dreams Monster Database and Practice Overlay Mod
+
+This is a practice helper for the video game [Shape of Dreams](https://store.steampowered.com/app/2444750/Shape_of_Dreams/).
 
 Shape of Dreams is an action roguelike.
 Although in low difficulty, you can beat the game mostly relying on reasonable builds, higher difficulties do require stronger ability to dodge enemy moves.
