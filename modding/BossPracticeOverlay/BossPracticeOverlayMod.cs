@@ -128,6 +128,7 @@ public class BossPracticeOverlayMod : ModBehaviour
 			if (monster.abilityPools.Count > 1 && monster.currentPoolIndex != _lastPoolIndex)
 			{
 				_lastPoolIndex = monster.currentPoolIndex;
+				_hudBoss = HudBossName(monster);
 				HudMessage($"{Tag} Boss pool changed: {monster.GetOriginalName()} now variant={VariantKey(monster)}");
 			}
 			return;
@@ -140,7 +141,7 @@ public class BossPracticeOverlayMod : ModBehaviour
 	{
 		_tracked = boss;
 		_lastPoolIndex = boss.currentPoolIndex;
-		_hudBoss = boss.GetOriginalName();
+		_hudBoss = HudBossName(boss);
 		_hudCast = "-";
 		try
 		{
@@ -224,6 +225,15 @@ public class BossPracticeOverlayMod : ModBehaviour
 		return "hard_variant";
 	}
 
+	private static string HudBossName(Monster boss)
+	{
+		if (VariantKey(boss) == "hard_variant")
+		{
+			return boss.GetOriginalName() + "(hard)";
+		}
+		return boss.GetOriginalName();
+	}
+
 	private static bool ZoneHardFlag()
 	{
 		ZoneManager zoneManager = NetworkedManagerBase<ZoneManager>.instance;
@@ -246,9 +256,13 @@ public class BossPracticeOverlayMod : ModBehaviour
 		WaitBoss
 	}
 
-	private static Dictionary<string, List<string>> _bossRoomIndex;
-	private static List<string> _bossRoster;
+	private static HashSet<string> _bossScenes;
+
+	private static int _sceneZoneCount;
+
 	private static Dictionary<string, Monster> _bossPrefabs;
+
+	private static List<string> _bossRoster;
 
 	private JumpState _jumpState;
 
@@ -260,7 +274,18 @@ public class BossPracticeOverlayMod : ModBehaviour
 
 	private bool _variantMarked;
 
+	private bool _poolsAttempted;
+
+	private List<PoolSnapshot> _filteredPools;
+
 	private StatBonus _lockBonus;
+
+	private class PoolSnapshot
+	{
+		public MonsterPool pool;
+
+		public List<MonsterPool.SpawnRuleEntry> original;
+	}
 
 	[ConsoleCommand("List all practice bosses. The query command for boss practice.")]
 	private void JumpToBossList()
@@ -295,11 +320,6 @@ public class BossPracticeOverlayMod : ModBehaviour
 		{
 			return;
 		}
-		if (_jumpState != JumpState.Idle)
-		{
-			Debug.Log($"{Tag} JumpToBoss: another jump is in progress, ignoring.");
-			return;
-		}
 		bool flag = false;
 		string text = bossName.Trim();
 		if (text.EndsWith("(hard)", StringComparison.OrdinalIgnoreCase))
@@ -319,16 +339,38 @@ public class BossPracticeOverlayMod : ModBehaviour
 			HudMessage($"{Tag} JumpToBoss: {text2} has no hard variant.");
 			return;
 		}
-		instance.isAlteringGameplay = true;
-		ApplyLock();
-		_jumpBossName = text2;
-		_jumpHard = flag;
 		ZoneManager zoneManager = NetworkedManagerBase<ZoneManager>.instance;
 		if (zoneManager == null)
 		{
 			HudMessage($"{Tag} JumpToBoss: not in a game.");
 			return;
 		}
+		if (_jumpState != JumpState.Idle)
+		{
+			if (_jumpState == JumpState.WaitBoss && string.Equals(_jumpBossName, text2, StringComparison.OrdinalIgnoreCase))
+			{
+				Debug.Log($"{Tag} JumpToBoss: repeated while waiting -> force-spawning {_jumpBossName}...");
+				bool flag2 = SpawnBossDirect(force: true);
+				FinishJump(flag2, flag2 ? "force-spawned" : "force-spawn failed");
+			}
+			else
+			{
+				AbortJump("superseded by a new JumpToBoss");
+				StartJump(text2, flag, zoneManager);
+			}
+			return;
+		}
+		StartJump(text2, flag, zoneManager);
+	}
+
+	private void StartJump(string bossName, bool hard, ZoneManager zoneManager)
+	{
+		instance.isAlteringGameplay = true;
+		ApplyLock();
+		_jumpBossName = bossName;
+		_jumpHard = hard;
+		_poolsAttempted = false;
+		_filteredPools = new List<PoolSnapshot>();
 		if (zoneManager.isSidetracking)
 		{
 			HudMessage($"{Tag} JumpToBoss: leaving current sidetrack room...");
@@ -350,12 +392,12 @@ public class BossPracticeOverlayMod : ModBehaviour
 			AbortJump("left the game");
 			return;
 		}
-		_bossRoomIndex.TryGetValue(_jumpBossName, out List<string> value);
-		if (value == null || value.Count == 0)
+		List<string> value = CandidateScenes(_jumpBossName);
+		if (value.Count == 0)
 		{
 			HudMessage($"{Tag} JumpToBoss: no boss scene found for {_jumpBossName}, spawning it in the current room...");
 			MarkVariant(_jumpHard);
-			bool flag = SpawnBossDirect();
+			bool flag = SpawnBossDirect(force: false);
 			FinishJump(flag, flag ? "spawned in current room" : "direct spawn failed");
 			return;
 		}
@@ -368,7 +410,7 @@ public class BossPracticeOverlayMod : ModBehaviour
 		HudMessage($"{Tag} JumpToBoss: loading boss scene {text} (variant={(_jumpHard ? "hard_variant" : "base")})...");
 		zoneManager.LoadSidetrackRoom(text);
 		_jumpState = JumpState.WaitBoss;
-		_jumpDeadline = Time.unscaledTime + 10f;
+		_jumpDeadline = Time.unscaledTime + 120f;
 	}
 
 	private void AdvanceJump()
@@ -393,22 +435,42 @@ public class BossPracticeOverlayMod : ModBehaviour
 			break;
 		}
 		case JumpState.WaitBoss:
+		{
+			if (!_poolsAttempted)
+			{
+				Room room = Room.instance;
+				if (room != null)
+				{
+					_poolsAttempted = true;
+					int num3 = FilterRoomPoolsToBoss(room, GetBossPrefab(_jumpBossName));
+					if (num3 == 0)
+					{
+						HudMessage($"{Tag} JumpToBoss: this scene's spawn pool has no {_jumpBossName}; repeat JumpToBoss to force-spawn it here.");
+					}
+					else
+					{
+						Debug.Log($"{Tag} JumpToBoss: filtered {num3} spawn pool(s) to {_jumpBossName}; waiting for the scene to spawn it...");
+					}
+				}
+			}
 			if (FindLiveBoss(_jumpBossName) != null)
 			{
 				FinishJump(ok: true, "boss scene ready");
 			}
 			else if (Time.unscaledTime > _jumpDeadline)
 			{
-				HudMessage($"{Tag} JumpToBoss: boss did not spawn on its own, spawning it directly...");
-				bool flag = SpawnBossDirect();
-				FinishJump(flag, flag ? "spawned by fallback" : "fallback spawn failed");
+				// No auto-spawn: boss scenes often have a rest area before the arena, and a
+				// timed spawn can end up with two bosses when the scene spawns its own.
+				AbortJump("no boss detected within 120s; run JumpToBoss again to force-spawn");
 			}
 			break;
+		}
 		}
 	}
 
 	private void FinishJump(bool ok, string note)
 	{
+		RestorePools();
 		UnmarkVariant();
 		_jumpState = JumpState.Idle;
 		string arg = (_jumpHard ? "hard_variant" : "base");
@@ -424,6 +486,7 @@ public class BossPracticeOverlayMod : ModBehaviour
 
 	private void AbortJump(string reason)
 	{
+		RestorePools();
 		UnmarkVariant();
 		_jumpState = JumpState.Idle;
 		HudMessage($"{Tag} JumpToBoss aborted: {reason}");
@@ -465,9 +528,9 @@ public class BossPracticeOverlayMod : ModBehaviour
 		}
 	}
 
-	private bool SpawnBossDirect()
+	private bool SpawnBossDirect(bool force)
 	{
-		if (FindLiveBoss(_jumpBossName) != null)
+		if (!force && FindLiveBoss(_jumpBossName) != null)
 		{
 			return true;
 		}
@@ -509,21 +572,166 @@ public class BossPracticeOverlayMod : ModBehaviour
 	}
 
 	private Monster FindLiveBoss(string bossName)
-	{
-		ActorManager actorManager = ActorManager.instance;
-		if (actorManager == null)
 		{
+			ActorManager actorManager = ActorManager.instance;
+			if (actorManager == null)
+			{
+				return null;
+			}
+			foreach (Entity allEntity in actorManager.allEntities)
+			{
+				if (allEntity is Monster monster && !monster.IsNullOrInactive() && monster.type == Monster.MonsterType.Boss && string.Equals(monster.GetOriginalName(), bossName, StringComparison.OrdinalIgnoreCase))
+				{
+					return monster;
+				}
+			}
 			return null;
 		}
-		foreach (Entity allEntity in actorManager.allEntities)
+
+		// Boss identity is decided by the loaded scene's spawn rule pools (scene names like
+		// Room_DarkCave_Boss_0 are generic). To make the scene spawn OUR boss, keep only the
+		// target's entries in the in-memory pool assets; the original lists are snapshotted
+		// and restored when the jump finishes so the session stays untouched afterwards.
+		private int FilterRoomPoolsToBoss(Room room, Monster target)
 		{
-			if (allEntity is Monster monster && !monster.IsNullOrInactive() && monster.type == Monster.MonsterType.Boss && string.Equals(monster.GetOriginalName(), bossName, StringComparison.OrdinalIgnoreCase))
+			if (target == null || _filteredPools == null)
 			{
-				return monster;
+				return 0;
+			}
+			int num = 0;
+			foreach (MonsterSpawnRule item in CollectLiveRules(room))
+			{
+				if (item == null || item.pool == null || item.pool.entries == null)
+				{
+					continue;
+				}
+				MonsterPool pool = item.pool;
+				bool alreadyFiltered = false;
+				foreach (PoolSnapshot filteredPool in _filteredPools)
+				{
+					if (filteredPool.pool == pool)
+					{
+						alreadyFiltered = true;
+						break;
+					}
+				}
+				if (alreadyFiltered)
+				{
+					continue;
+				}
+				bool flag = false;
+				foreach (MonsterPool.SpawnRuleEntry entry in pool.entries)
+				{
+					if (entry != null && PoolEntryMatches(entry, target))
+					{
+						flag = true;
+						break;
+					}
+				}
+				if (!flag)
+				{
+					continue;
+				}
+				PoolSnapshot poolSnapshot = new PoolSnapshot
+				{
+					pool = pool,
+					original = pool.entries
+				};
+				List<MonsterPool.SpawnRuleEntry> list = new List<MonsterPool.SpawnRuleEntry>();
+				foreach (MonsterPool.SpawnRuleEntry entry2 in pool.entries)
+				{
+					if (entry2 != null && PoolEntryMatches(entry2, target))
+					{
+						list.Add(entry2);
+					}
+				}
+				pool.entries = list;
+				_filteredPools.Add(poolSnapshot);
+				num++;
+			}
+			return num;
+		}
+
+		private void RestorePools()
+		{
+			if (_filteredPools == null)
+			{
+				return;
+			}
+			foreach (PoolSnapshot filteredPool in _filteredPools)
+			{
+				try
+				{
+					filteredPool.pool.entries = filteredPool.original;
+				}
+				catch (Exception ex)
+				{
+					Debug.LogError($"{Tag} pool restore failed: {ex}");
+				}
+			}
+			_filteredPools.Clear();
+		}
+
+		private static bool PoolEntryMatches(MonsterPool.SpawnRuleEntry entry, Monster target)
+		{
+			try
+			{
+				return entry.monster.asset == target;
+			}
+			catch (Exception)
+			{
+				return false;
 			}
 		}
-		return null;
-	}
+
+		private static List<MonsterSpawnRule> CollectLiveRules(Room room)
+		{
+			List<MonsterSpawnRule> list = new List<MonsterSpawnRule>();
+			if (room.monsters != null && room.monsters.defaultRule != null)
+			{
+				list.Add(room.monsters.defaultRule);
+			}
+			Section_Monsters[] componentsInChildren = room.GetComponentsInChildren<Section_Monsters>(true);
+			foreach (Section_Monsters section_Monsters in componentsInChildren)
+			{
+				if (section_Monsters != null && section_Monsters.ruleOverride != null)
+				{
+					list.Add(section_Monsters.ruleOverride);
+				}
+			}
+			return list;
+		}
+
+		// Scene names encode only the biome (Room_<Biome>_Boss_0); boss identity lives inside
+		// the scene's spawn pools, so candidates are biome-level and refined after loading.
+		private static List<string> CandidateScenes(string bossName)
+		{
+			List<string> list = new List<string>();
+			if (_bossScenes == null)
+			{
+				return list;
+			}
+			string[] array = bossName.Split('_');
+			string text = ((array.Length > 1) ? array[1] : bossName);
+			string text2 = "";
+			for (int i = 0; i < array.Length; i++)
+			{
+				if (array[i] == "Boss" && i + 1 < array.Length)
+				{
+					text2 = array[i + 1];
+				}
+			}
+			string item = "Room_" + text + "_Boss";
+			foreach (string item2 in _bossScenes)
+			{
+				if (item2.StartsWith(item, StringComparison.OrdinalIgnoreCase) || (text2.Length > 0 && item2.IndexOf(text2, StringComparison.OrdinalIgnoreCase) >= 0))
+				{
+					list.Add(item2);
+				}
+			}
+			list.Sort(StringComparer.OrdinalIgnoreCase);
+			return list;
+		}
 
 	private void ApplyLock()
 	{
@@ -557,7 +765,8 @@ public class BossPracticeOverlayMod : ModBehaviour
 		Debug.Log($"{Tag} Boss list ({_bossRoster.Count}) - usage: JumpToBoss <name> or <name>(hard):");
 		foreach (string boss in _bossRoster)
 		{
-			string text = ((_bossRoomIndex.TryGetValue(boss, out List<string> value) && value.Count > 0) ? string.Join("/", value.GetRange(0, Math.Min(2, value.Count))) + (value.Count > 2 ? "/..." : "") : "no-scene (direct spawn)");
+			List<string> value = CandidateScenes(boss);
+			string text = ((value.Count > 0) ? string.Join("/", value.GetRange(0, Math.Min(2, value.Count))) + (value.Count > 2 ? "/..." : "") : "no-scene (direct spawn)");
 			if (_bossPrefabs[boss].abilityPools.Count > 1)
 			{
 				Debug.Log($"{Tag}  {boss}          scenes={text}");
@@ -653,10 +862,19 @@ public class BossPracticeOverlayMod : ModBehaviour
 			Debug.Log($"{Tag} debug: first room scenes: {string.Join(", ", list.GetRange(0, Math.Min(15, list.Count)))}");
 			foreach (string boss in _bossRoster)
 			{
-				string text = ((_bossRoomIndex.TryGetValue(boss, out List<string> value) && value.Count > 0) ? string.Join(", ", value) : "NONE (direct spawn fallback)");
+				List<string> value = CandidateScenes(boss);
+				string text = ((value.Count > 0) ? string.Join(", ", value) : "NONE (direct spawn fallback)");
 				Debug.Log($"{Tag} debug: {boss} -> {text}");
 			}
-			HudMessage($"{Tag} diagnostics written to the log ({roomScenes.Count} scenes, {_bossRoomIndex.Count}/{_bossRoster.Count} bosses mapped).");
+			int mapped = 0;
+			foreach (string boss in _bossRoster)
+			{
+				if (CandidateScenes(boss).Count > 0)
+				{
+					mapped++;
+				}
+			}
+			HudMessage($"{Tag} diagnostics written to the log ({roomScenes.Count} scenes, {mapped}/{_bossRoster.Count} bosses matched by scene name).");
 		}
 		catch (Exception arg)
 		{
@@ -711,7 +929,6 @@ public class BossPracticeOverlayMod : ModBehaviour
 		}
 		_bossRoster = new List<string>();
 		_bossPrefabs = new Dictionary<string, Monster>(StringComparer.OrdinalIgnoreCase);
-		_bossRoomIndex = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
 		foreach (Monster allByType in DewResources.FindAllByType<Monster>())
 		{
 			if (allByType == null || allByType.type != Monster.MonsterType.Boss)
@@ -727,28 +944,10 @@ public class BossPracticeOverlayMod : ModBehaviour
 		}
 		_bossRoster.Sort(StringComparer.OrdinalIgnoreCase);
 		// Rooms are standalone scenes, not DewResources assets (LoadNode calls
-		// DewNetworkManager.LoadSceneAsync(node.room) — ZoneManager.cs:1436), so there is
-		// nothing to scan via FindAllByType<Room>(). Boss->scene association is derived at
-		// runtime from the zone room-name tables plus a name match (strip "Mon_" prefix).
-		int zoneCount = 0;
-		HashSet<string> hashSet = CollectRoomScenes(ref zoneCount);
-		foreach (string boss in _bossRoster)
-		{
-			string text = ((boss.Length > 4 && boss.StartsWith("Mon_", StringComparison.OrdinalIgnoreCase)) ? boss.Substring(4) : boss);
-			List<string> list = new List<string>();
-			foreach (string item in hashSet)
-			{
-				if (item.IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0)
-				{
-					list.Add(item);
-				}
-			}
-			if (list.Count > 0)
-			{
-				list.Sort(StringComparer.OrdinalIgnoreCase);
-				_bossRoomIndex[boss] = list;
-			}
-		}
-		Debug.Log($"{Tag} boss index ready: {_bossRoster.Count} bosses, {zoneCount} zones, {hashSet.Count} room scenes, {_bossRoomIndex.Count} bosses with a matched scene");
+		// DewNetworkManager.LoadSceneAsync(node.room) — ZoneManager.cs:1436), and zones are
+		// not in the FindAllByType type index either; the game discovers them by name
+		// (FindAllByNameSubstring<Zone>("Zone_") — ZoneManager.cs:3563).
+		_bossScenes = CollectRoomScenes(ref _sceneZoneCount);
+		Debug.Log($"{Tag} boss index ready: {_bossRoster.Count} bosses, {_sceneZoneCount} zones, {_bossScenes.Count} room scenes");
 	}
 }
