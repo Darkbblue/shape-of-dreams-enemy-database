@@ -625,19 +625,27 @@ public class BossPracticeOverlayMod : ModBehaviour
 			int zoneCount = 0;
 			HashSet<string> roomScenes = CollectRoomScenes(ref zoneCount);
 			List<string> list = new List<string>(roomScenes);
-			Debug.Log($"{Tag} debug: rooms-in-resources={num} (expected 0: rooms are standalone scenes, not assets), zones={zoneCount}, roomScenes={roomScenes.Count}");
 			List<Zone> list2 = new List<Zone>();
-			foreach (Zone allByType2 in DewResources.FindAllByType<Zone>())
+			foreach (Zone allByNameSubstring in DewResources.FindAllByNameSubstring<Zone>("Zone_"))
 			{
-				if (!(allByType2 == null))
+				if (!(allByNameSubstring == null))
 				{
-					list2.Add(allByType2);
+					list2.Add(allByNameSubstring);
 					if (list2.Count >= 3)
 					{
 						break;
 					}
 				}
 			}
+			int roomPrefabs = 0;
+			foreach (Room item2 in DewResources.FindAllByNameSubstring<Room>("Room_"))
+			{
+				if (item2 != null)
+				{
+					roomPrefabs++;
+				}
+			}
+			Debug.Log($"{Tag} debug: rooms-in-resources={num}, rooms-by-name('Room_')={roomPrefabs} (informational), zones-by-name('Zone_')={zoneCount}, roomScenes={roomScenes.Count}");
 			foreach (Zone item in list2)
 			{
 				Debug.Log($"{Tag} debug: zone {item.name} bossRooms=[{string.Join(", ", item.bossRooms)}]");
@@ -660,19 +668,22 @@ public class BossPracticeOverlayMod : ModBehaviour
 	{
 		HashSet<string> hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 		zoneCount = 0;
-		foreach (Zone allByType in DewResources.FindAllByType<Zone>())
+		// Zones are NOT discoverable via FindAllByType (the type index only holds the
+		// class-per-asset entries like monsters); the game itself discovers them by name:
+		// DewResources.FindAllByNameSubstring<Zone>("Zone_") — ZoneManager.cs:3563.
+		foreach (Zone zoneByName in DewResources.FindAllByNameSubstring<Zone>("Zone_"))
 		{
-			if (allByType == null)
+			if (zoneByName == null)
 			{
 				continue;
 			}
 			zoneCount++;
-			CollectNames(hashSet, allByType.rooms);
-			CollectNames(hashSet, allByType.combatRooms);
-			CollectNames(hashSet, allByType.startRooms);
-			CollectNames(hashSet, allByType.bossRooms);
-			CollectNames(hashSet, allByType.shopRooms);
-			CollectNames(hashSet, allByType.eventRooms);
+			CollectNames(hashSet, zoneByName.rooms);
+			CollectNames(hashSet, zoneByName.combatRooms);
+			CollectNames(hashSet, zoneByName.startRooms);
+			CollectNames(hashSet, zoneByName.bossRooms);
+			CollectNames(hashSet, zoneByName.shopRooms);
+			CollectNames(hashSet, zoneByName.eventRooms);
 		}
 		return hashSet;
 	}
