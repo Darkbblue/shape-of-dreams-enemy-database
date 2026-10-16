@@ -24,7 +24,7 @@
 | `JumpToBoss Mon_Ink_BossWhiteNight` | 传送到其 boss 场景（普通形态）+ 开锁血 |
 | `JumpToBoss Mon_Ink_BossWhiteNight(hard)` | 同上，困难变体 |
 | `JumpToBossDebug` | 诊断：打印 zone 清单、房间场景名全集、每个 boss 的场景匹配结果 |
-| `BuildBossSceneMap` | **一次性生成精确映射**：**主菜单**执行（局内会拒绝），additive 逐个加载 boss 场景读取出怪池后卸载，几分钟内写出 `about/boss_scenes.json` |
+| `BuildBossSceneMap` | **一次性生成精确映射**：建议主菜单执行，additive 逐个加载 boss 场景读取出怪池后卸载，几分钟内写出 `about/boss_scenes.json`（局内执行会给提示但不阻断） |
 
 注意：游戏内控制台不支持省略有默认值的参数，`JumpToBoss` 必须带参数；查询请用 `JumpToBossList`。
 

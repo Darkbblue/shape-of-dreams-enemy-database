@@ -835,11 +835,14 @@ public class BossPracticeOverlayMod : ModBehaviour
 			HudMessage($"{Tag} scene scan already running ({_scanCurrent ?? "..."})");
 			return;
 		}
-		if (!MakeSureNotInGame())
-		{
-			return;
-		}
 		EnsureBossIndex();
+		// No hard gate here: the built-in MakeSureNotInGame() is inverted in the game's own
+		// code (returns true IN game, rejects in main menu). Additive scanning inside a run
+		// is harmless-to-messy, so just advise the menu and continue.
+		if (NetworkedManagerBase<GameManager>.instance != null)
+		{
+			HudMessage($"{Tag} hint: scanning is safest in the main menu; continuing anyway...");
+		}
 		_scanRoutine = StartCoroutine(ScanRoutine());
 	}
 
