@@ -39,12 +39,53 @@ namespace UnityEngine
 		}
 	}
 
-	public class MonoBehaviour : Object
+	public class Component : Object
+	{
+		public T GetComponent<T>()
+		{
+			return default(T);
+		}
+
+		public T GetComponentInChildren<T>(bool includeInactive)
+		{
+			return default(T);
+		}
+
+		public T[] GetComponentsInChildren<T>(bool includeInactive)
+		{
+			return new T[0];
+		}
+	}
+
+	public class MonoBehaviour : Component
 	{
 	}
 
 	public class ScriptableObject : Object
 	{
+	}
+
+	public struct Vector3
+	{
+		public float x;
+
+		public float y;
+
+		public float z;
+
+		public static Vector3 zero => default(Vector3);
+
+		public float sqrMagnitude => 0f;
+
+		public static Vector3 operator -(Vector3 a, Vector3 b)
+		{
+			return default(Vector3);
+		}
+	}
+
+	public struct Quaternion
+	{
+		public static Quaternion identity => default(Quaternion);
 	}
 
 	public static class Debug

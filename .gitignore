@@ -20,6 +20,7 @@ modding/tools/fake-managed/
 # 反编译缓存、游戏 DLL、ModTemplate 等参考材料
 ref/
 PLAN.md
+modding/BOSSJUMP_PLAN.md
 # RawData 提取的原始 JSON、Unity 资产 dump（1.8G+）
 datamining/raw_game_data/
 datamining/raw_game_data_unity/

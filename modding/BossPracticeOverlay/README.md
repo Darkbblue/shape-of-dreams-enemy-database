@@ -2,9 +2,31 @@
 
 练习用 overlay mod：自动跟踪当前英雄首领（`Monster.type == Boss`），把每次出招写入游戏自带
 的 **F1 日志查看器**。所有名字使用资源内部名，与 `datamining/processed_data/out/` 的 boss
-数据库逐字段互查。
+数据库逐字段互查。另提供 `JumpToBoss` 一键传送练习（见下文）。
 
-不做 Harmony patch、不改玩法（无需 `isAlteringGameplay`）、单文件实现。
+不做 Harmony patch。基础招式显示零玩法改动；`JumpToBoss` 属玩法改动，使用时会按官方 CoC 置 `isAlteringGameplay`。
+
+## JumpToBoss 快速练习（控制台命令）
+
+按 **`** 打开控制台：
+
+| 命令 | 行为 |
+|------|------|
+| `JumpToBoss` | 列出全部 boss（困难变体列为独立条目 `<Mon_X>(hard)`）及运行时发现的对应房间 |
+| `JumpToBoss Mon_Ink_BossWhiteNight` | 传送到其 boss 房（普通形态）+ 开锁血 |
+| `JumpToBoss Mon_Ink_BossWhiteNight(hard)` | 同上，困难变体 |
+| `JumpToBossList` | 同无参 JumpToBoss（备用别名） |
+
+行为细节：
+
+- **boss↔房间映射运行时自动发现**（扫描全部 Room 预制体的 `MonsterSpawnRule.pool` + section 覆盖），
+  首次执行命令时构建并打印统计日志；无房间匹配的 boss 自动退化为"当前房间直生成"。
+- **变体强制**：加载前把当前区 index 写入/移出 `hardVariantBossZoneIndices`，boss 出生后移除并回读确认。
+- **锁血（"看得见的锁血"）**：血量上限补至 ≥2000 + 护甲 +70 + 回血 +150/s，伤害照常结算
+  （受击特效、掉血、回复全部可见）。绑定英雄实体，**退出一局自动消失**，无需手动关闭。
+- 若侧厅房间未自动出怪（10s 内未检测到目标 boss），自动在房间内直接生成该 boss（难度缩放自动生效）。
+- 所有跳转/生成均在 server 侧（单机练习即 host）；连续跳转支持（自动退出当前侧厅再进新侧厅）。
+- 首次使用任意跳转后 `isAlteringGameplay = true`（对局大厅显示 MOD 标记，直到游戏进程重启）。
 
 ## 日志格式 ↔ 数据库对照
 
