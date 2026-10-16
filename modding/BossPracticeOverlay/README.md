@@ -1,10 +1,18 @@
 # Boss Practice Overlay (Shape of Dreams)
 
-练习用 overlay mod：自动跟踪当前英雄首领（`Monster.type == Boss`），把每次出招写入游戏自带
-的 **F1 日志查看器**。所有名字使用资源内部名，与 `datamining/processed_data/out/` 的 boss
-数据库逐字段互查。另提供 `JumpToBoss` 一键传送练习（见下文）。
+练习用 overlay mod：自动跟踪当前英雄首领（`Monster.type == Boss`），在**屏幕左上角 HUD** 常驻显示两行——
+第一行 boss 名、第二行最近一次出招（`At_X#N`）——所有名字使用资源内部名，与
+`datamining/processed_data/out/` 的 boss 数据库逐字段互查。另提供 `JumpToBoss` 一键传送练习（见下文）。
 
 不做 Harmony patch。基础招式显示零玩法改动；`JumpToBoss` 属玩法改动，使用时会按官方 CoC 置 `isAlteringGameplay`。
+
+## 画面显示（HUD）
+
+- 左上角两行：`Mon_X` / `At_Y#N`（boss 未出招前第二行显示 `-`）；无 boss 时自动隐藏。
+- 下方临时消息行：跳转/锁血/错误反馈，8 秒后消失。
+- 日志（F1 查看器）只保留低频事件（boss 行、跳转流程、锁血数值）；出招不再写日志。
+- 提示：若 F1 日志查看器影响操作，可在设置里把控制台模式切为 **ShownWithoutPopup**
+  （隐藏日志查看器，`` ` `` 键仍可开控制台输入命令）。
 
 ## JumpToBoss 快速练习（控制台命令）
 
@@ -12,19 +20,22 @@
 
 | 命令 | 行为 |
 |------|------|
-| `JumpToBoss` | 列出全部 boss（困难变体列为独立条目 `<Mon_X>(hard)`）及运行时发现的对应房间 |
-| `JumpToBoss Mon_Ink_BossWhiteNight` | 传送到其 boss 房（普通形态）+ 开锁血 |
+| `JumpToBossList` | **查询指令**：列出全部 boss（困难变体列为独立条目 `<Mon_X>(hard)`）及运行时发现的对应场景 |
+| `JumpToBoss Mon_Ink_BossWhiteNight` | 传送到其 boss 场景（普通形态）+ 开锁血 |
 | `JumpToBoss Mon_Ink_BossWhiteNight(hard)` | 同上，困难变体 |
-| `JumpToBossList` | 同无参 JumpToBoss（备用别名） |
+| `JumpToBossDebug` | 诊断：打印 zone 清单、房间场景名全集、每个 boss 的场景匹配结果 |
+
+注意：游戏内控制台不支持省略有默认值的参数，`JumpToBoss` 必须带参数；查询请用 `JumpToBossList`。
 
 行为细节：
 
-- **boss↔房间映射运行时自动发现**（扫描全部 Room 预制体的 `MonsterSpawnRule.pool` + section 覆盖），
-  首次执行命令时构建并打印统计日志；无房间匹配的 boss 自动退化为"当前房间直生成"。
+- **boss↔场景映射运行时自动发现**：房间是独立场景（非资源），从 `Zone` 的房间名清单
+  （bossRooms/eventRooms 等）收集全部场景名，与 boss 名（剥 `Mon_` 前缀）做名字关联；
+  无匹配的 boss 自动退化为"当前房间直生成"。`JumpToBossDebug` 可查看完整发现结果。
 - **变体强制**：加载前把当前区 index 写入/移出 `hardVariantBossZoneIndices`，boss 出生后移除并回读确认。
 - **锁血（"看得见的锁血"）**：血量上限补至 ≥2000 + 护甲 +70 + 回血 +150/s，伤害照常结算
   （受击特效、掉血、回复全部可见）。绑定英雄实体，**退出一局自动消失**，无需手动关闭。
-- 若侧厅房间未自动出怪（10s 内未检测到目标 boss），自动在房间内直接生成该 boss（难度缩放自动生效）。
+- 若侧厅场景未自动出怪（10s 内未检测到目标 boss），自动在房间内直接生成该 boss（难度缩放自动生效）。
 - 所有跳转/生成均在 server 侧（单机练习即 host）；连续跳转支持（自动退出当前侧厅再进新侧厅）。
 - 首次使用任意跳转后 `isAlteringGameplay = true`（对局大厅显示 MOD 标记，直到游戏进程重启）。
 
@@ -45,27 +56,19 @@ Boss 行（进入 boss 房 / 更换跟踪目标时输出一次，常驻到下一
 | `netId=` | `persistentNetId`（双 boss 房固定跟踪最小者） | — |
 | `[entity.name=…]` | 原始 `Object.name` 兜底（核对命名契约） | — |
 
-Cast 行（每次 `EntityEvent_OnCastComplete`）：
-
-```
-[SOD] Cast: At_Mon_Ink_BossWhiteNight_Cataclysm#0 abi=Abi_Xxx anim=Mon_XXX_Atk5 (0.12s/1.40s) cdMul=1 locks=lock_cast+lock_cd
-```
+出招行已改为 HUD 显示（见上文"画面显示"），第二行格式 `At_X#N`：
 
 | 字段 | 含义 | 数据库对应 |
 |------|------|-----------|
-| `At_X#N` | 招式 trigger 名 + config 序号 | `moves[].name` + `moves[].config_index` |
-| `abi=` | 实际执行的 AbilityInstance 资源名 | `moves[].instance` |
-| `anim=` | 此刻播放的动画片段 `resourceId`（运行时才有，DB 只记 set/null） | — |
-| `(e/d)` | 动画 `elapsedTime/duration` | — |
-| `cdMul=` | `trigger.GetCooldownTimeMultiplier(configIndex)` 实时值；**实际冷却 ≈ DB cooldown × cdMul**（DB 已含出生基线，战斗内激怒/增益会偏离） | `moves[].can_receive_cooldown_reduction` |
-| `locks=` | 仅当存在时输出：一场只放一次的锁定标志 | `moves[].lock_cast_until_killed` / `lock_cooldown_until_killed` |
+| `At_X` | 招式 trigger 资源名 | `moves[].name` |
+| `#N` | config 序号 | `moves[].config_index` |
 
 其他行为：
 
-- 无 boss / 杂兵战：不输出。离开游戏或 boss 死亡后输出一次 `[SOD] no boss (…)`。
+- 无 boss / 杂兵战：HUD 隐藏。离开游戏或 boss 死亡后临时消息 `[SOD] no boss (…)`。
 - 双 boss 房：跟踪 `persistentNetId` 最小者；其死亡后自动切换到另一只。
-- 招式池中途变化（正常不会发生）会输出 `Boss pool changed` 行。
-- 全部轮询/事件包 try/catch：异常 `LogError` 一次并停用自身，绝不上抛。
+- 招式池中途变化（正常不会发生）会输出 `Boss pool changed` 消息。
+- 全部轮询/事件包 try/catch：异常提示一次并停用自身，绝不上抛。
 
 ## 构建（游戏 PC，Windows）
 

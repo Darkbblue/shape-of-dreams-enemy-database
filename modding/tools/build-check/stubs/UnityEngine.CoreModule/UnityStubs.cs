@@ -88,6 +88,63 @@ namespace UnityEngine
 		public static Quaternion identity => default(Quaternion);
 	}
 
+	public struct Rect
+	{
+		public Rect(float x, float y, float width, float height)
+		{
+		}
+	}
+
+	public struct Color
+	{
+		public Color(float r, float g, float b, float a)
+		{
+		}
+
+		public static Color white => default(Color);
+
+		public static Color black => default(Color);
+
+		public static Color yellow => default(Color);
+	}
+
+	public class GUIStyle
+	{
+		public GUIStyle()
+		{
+		}
+
+		public GUIStyle(GUIStyle other)
+		{
+		}
+
+		public int fontSize;
+	}
+
+	public class GUISkin
+	{
+		public GUIStyle label => new GUIStyle();
+	}
+
+	public static class GUI
+	{
+		public static GUISkin skin => new GUISkin();
+
+		public static Color color
+		{
+			get;
+			set;
+		}
+
+		public static void Label(Rect position, string text)
+		{
+		}
+
+		public static void Label(Rect position, string text, GUIStyle style)
+		{
+		}
+	}
+
 	public static class Debug
 	{
 		public static void Log(object message)
